@@ -260,6 +260,20 @@ Although the application is a client-side SPA, it is typically served via a cont
     -   **Non-Root User:** The Docker container runs as a non-root user (e.g., `nginx` user) to minimize privilege escalation risks.
     -   **Minimal Base Image:** Uses `nginx:alpine` for a reduced attack surface.
 
+### 6.5. Container Specification
+The application is packaged as a Docker container optimized for security and performance.
+
+-   **Base Images:**
+    -   **Build Stage:** `node:22-alpine` (Latest LTS, minimal footprint).
+    -   **Runtime Stage:** `nginx:alpine` (Lightweight web server).
+-   **Port:** Exposes port `3000` (mapped to Nginx internal port).
+-   **Security Hardening:**
+    -   **Non-Root User:** Runs as the `nginx` user, not `root`.
+    -   **Permission Fixes:** Explicit `chown` and `chmod` on `/usr/share/nginx/html`, `/var/cache/nginx`, and `/var/log/nginx` to allow non-root operation.
+    -   **Clean Build:** Default Nginx static assets are removed before copying the build artifacts.
+-   **Build Arguments:**
+    -   `API_KEY`: Injected at build time to populate `VITE_API_KEY` for the Gemini SDK.
+
 ---
 
 ## 7. Performance Optimizations
