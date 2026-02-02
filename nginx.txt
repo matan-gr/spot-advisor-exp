@@ -1,0 +1,71 @@
+server {
+    listen 3000;
+    server_name localhost;
+    root /usr/share/nginx/html;
+    index index.html;
+
+    # Disable emitting nginx version in error messages and server header
+    server_tokens off;
+
+    # Security Headers
+    add_header X-Frame-Options "DENY" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-XSS-Protection "1; mode=block" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+    add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' data: https://fonts.gstatic.com https://fonts.googleapis.com; connect-src 'self' https://compute.googleapis.com https://generativelanguage.googleapis.com;" always;
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;
+    add_header Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()" always;
+
+    # Compression Settings
+    gzip on;
+    gzip_vary on;
+    gzip_proxied any;
+    gzip_comp_level 6;
+    gzip_min_length 256;
+    gzip_types
+        application/atom+xml
+        application/geo+json
+        application/javascript
+        application/x-javascript
+        application/json
+        application/ld+json
+        application/manifest+json
+        application/rdf+xml
+        application/rss+xml
+        application/xhtml+xml
+        application/xml
+        font/eot
+        font/otf
+        font/ttf
+        image/svg+xml
+        text/css
+        text/javascript
+        text/plain
+        text/xml;
+
+    # Buffer Size Settings (Protection against large payloads/headers)
+    client_max_body_size 1M;
+    client_header_buffer_size 1k;
+    large_client_header_buffers 4 8k;
+
+    # SPA Routing
+    location / {
+        try_files $uri $uri/ /index.html;
+        # Prevent caching of index.html to ensure updates are seen immediately
+        add_header Cache-Control "no-store, no-cache, must-revalidate";
+    }
+
+    # Static Assets Caching (Hashed filenames)
+    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
+        expires 1y;
+        add_header Cache-Control "public, no-transform, immutable";
+        access_log off;
+    }
+
+    # Health Check Endpoint
+    location /health {
+        access_log off;
+        return 200 'OK';
+        add_header Content-Type text/plain;
+    }
+}

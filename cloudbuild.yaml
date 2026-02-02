@@ -1,0 +1,16 @@
+steps:
+  # Build the container image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [
+      'build',
+      '--build-arg', 'API_KEY=${_API_KEY}',
+      '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/spot-advisor-repo/spot-advisor:latest',
+      '.'
+    ]
+  # Push the container image to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/spot-advisor-repo/spot-advisor:latest']
+images:
+  - 'us-central1-docker.pkg.dev/$PROJECT_ID/spot-advisor-repo/spot-advisor:latest'
+substitutions:
+  _API_KEY: '' # Default empty, must be provided at trigger time
