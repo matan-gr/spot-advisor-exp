@@ -34,16 +34,7 @@ gcloud config set project [YOUR_PROJECT_ID]
 gcloud services enable artifactregistry.googleapis.com run.googleapis.com cloudbuild.googleapis.com
 ```
 
-### 2. Prepare Configuration Files
-
-Rename the template files to their standard names before building:
-
-```bash
-cp dockerfile.txt Dockerfile
-cp nginx.txt nginx.conf
-```
-
-### 3. Set up Artifact Registry
+### 2. Set up Artifact Registry
 
 You need a Docker repository to store the images.
 
@@ -54,9 +45,10 @@ gcloud artifacts repositories create spot-advisor-repo \
     --description="Docker repository for Spot Capacity Advisor"
 ```
 
-### 4. Build and Push
+### 3. Build and Push
 
 Use Cloud Build to build the image and push it to Artifact Registry.
+Cloud Build will automatically rename the template file `dockerfile.txt` to `Dockerfile` for the build.
 
 **Important:** You must provide your Gemini API Key.
 
@@ -67,7 +59,7 @@ gcloud builds submit \
     .
 ```
 
-### 5. Deploy to Cloud Run
+### 4. Deploy to Cloud Run
 
 Once the build is complete, deploy the image:
 
@@ -80,7 +72,7 @@ gcloud run deploy spot-advisor \
     --port 3000
 ```
 
-### 6. Access Documentation
+### 5. Access Documentation
 
 The full project history and technical documentation is deployed with the application. You can access it at:
 
@@ -94,7 +86,6 @@ If you prefer to run locally or on a VM:
 
 ```bash
 cp dockerfile.txt Dockerfile
-cp nginx.txt nginx.conf
 ```
 
 ### 2. Build
