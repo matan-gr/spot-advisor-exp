@@ -24,6 +24,7 @@ interface ConfigurationPanelProps {
   addScenario: () => void;
   removeScenario: (id: string) => void;
   addToast: (type: Toast['type'], title: string, message: string, duration?: number) => void;
+  isConfigDrifted: boolean;
 }
 
 const ConfigurationPanel: React.FC<ConfigurationPanelProps> = React.memo(({
@@ -40,84 +41,13 @@ const ConfigurationPanel: React.FC<ConfigurationPanelProps> = React.memo(({
   onZonesChange,
   addScenario,
   removeScenario,
-  addToast
+  addToast,
+  isConfigDrifted
 }) => {
   const [isShapeOpen, setIsShapeOpen] = useState(false);
   const [dismissedProjectError, setDismissedProjectError] = useState(false);
   const shapeDropdownRef = useRef<HTMLDivElement>(null);
   
-  // Track if configuration has changed since last run
-  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
-  const lastRunConfigRef = useRef<string>('');
-  const wasLoadingRef = useRef(state.loading);
-
-  // Generate a signature for the current configuration
-  const getConfigSignature = (s: AppState) => {
-    return JSON.stringify({
-      project: s.project,
-      region: s.region,
-      zones: s.zones,
-      machineType: s.selectedMachineType,
-      size: s.size,
-      targetShape: s.targetShape,
-      workloadProfile: s.workloadProfile,
-      growthScenario: s.growthScenario
-    });
-  };
-
-  // 1. Capture the "Run Config" when a run completes (loading -> false, result exists)
-  useEffect(() => {
-      if (wasLoadingRef.current && !state.loading && state.result) {
-          lastRunConfigRef.current = getConfigSignature(state);
-          setHasUnsavedChanges(false);
-      }
-      // Also initialize if we have a result on mount (e.g. from localStorage) and no baseline yet
-      if (!wasLoadingRef.current && !state.loading && state.result && !lastRunConfigRef.current) {
-          lastRunConfigRef.current = getConfigSignature(state);
-      }
-      wasLoadingRef.current = state.loading;
-  }, [state.loading, state.result, state.project, state.region, state.zones, state.selectedMachineType, state.size, state.targetShape, state.workloadProfile, state.growthScenario]);
-
-  // 2. Detect changes against the baseline
-  useEffect(() => {
-    // If we don't have a baseline (no run yet), don't flag changes
-    if (!lastRunConfigRef.current) return;
-
-    const currentConfig = getConfigSignature(state);
-    
-    if (currentConfig !== lastRunConfigRef.current) {
-         if (!hasUnsavedChanges) {
-             setHasUnsavedChanges(true);
-             addToast(
-                 'info',
-                 'Configuration Changed',
-                 'Workload parameters updated. Run a new analysis to see effects.',
-                 3000
-             );
-         }
-    } else {
-        // Reverted back to original config
-        if (hasUnsavedChanges) setHasUnsavedChanges(false);
-    }
-  }, [
-      state.project, 
-      state.region, 
-      state.zones, 
-      state.selectedMachineType, 
-      state.size, 
-      state.targetShape, 
-      state.workloadProfile, 
-      state.growthScenario,
-      hasUnsavedChanges // Include this to avoid stale closure if needed, though logic guards against loops
-  ]);
-
-  // Reset unsaved changes when a run starts
-  useEffect(() => {
-      if (state.loading) {
-          setHasUnsavedChanges(false);
-      }
-  }, [state.loading]);
-
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (shapeDropdownRef.current && !shapeDropdownRef.current.contains(event.target as Node)) {
@@ -190,65 +120,6 @@ const ConfigurationPanel: React.FC<ConfigurationPanelProps> = React.memo(({
                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                    {/* Left Column: Machine Type */}
                    <div className="space-y-5">
-                       <div className="group relative">
-                          <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-2">
-                              Google Cloud Project ID <span className="text-indigo-500">*</span>
-                          </label>
-                          <div className="relative">
-                            <DebouncedInput 
-                                type="text" 
-                                value={state.project}
-                                onCommit={(val) => updateState({ project: val })}
-                                className={`input-field
-                                    ${showValidation 
-                                        ? isValidProject 
-                                            ? 'border-emerald-500 focus:border-emerald-500 focus:ring-emerald-500' 
-                                            : 'border-red-500 focus:border-red-500 bg-red-50/10'
-                                        : state.validationErrors?.project
-                                            ? 'border-red-500 focus:border-red-500 ring-1 ring-red-500 bg-red-50/10'
-                                            : ''
-                                    }
-                                `}
-                                placeholder="gcp-project-id"
-                            />
-                            {showValidation && (
-                                <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                    {isValidProject ? (
-                                        <span className="text-emerald-500 animate-enter"><Icons.Check /></span>
-                                    ) : (
-                                        <span className="text-red-500 animate-enter"><Icons.Cancel /></span>
-                                    )}
-                                </div>
-                            )}
-                          </div>
-                          {/* Project ID Error Message */}
-                          <AnimatePresence>
-                            {showValidation && !isValidProject && !dismissedProjectError && (
-                                <motion.div
-                                    initial={{ opacity: 0, height: 0 }}
-                                    animate={{ opacity: 1, height: 'auto' }}
-                                    exit={{ opacity: 0, height: 0 }}
-                                    className="mt-2 flex items-start gap-2 bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-900/50 rounded-lg p-2"
-                                >
-                                    <div className="text-red-500 shrink-0 mt-0.5"><Icons.Info size={12} /></div>
-                                    <div className="flex-1">
-                                        <p className="text-[10px] text-red-600 dark:text-red-300 font-medium leading-tight">
-                                            Invalid Project ID Format.
-                                        </p>
-                                        <p className="text-[9px] text-red-500 dark:text-red-400 mt-0.5 leading-tight">
-                                            Project ID must be 6-30 characters, containing only lowercase letters, digits, and hyphens.
-                                        </p>
-                                    </div>
-                                    <button 
-                                        onClick={() => setDismissedProjectError(true)}
-                                        className="text-red-400 hover:text-red-600 dark:hover:text-red-200 transition-colors"
-                                    >
-                                        <Icons.Cancel size={12} />
-                                    </button>
-                                </motion.div>
-                            )}
-                          </AnimatePresence>
-                       </div>
                        
                        <div className="mb-4">
                            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-2">Machine Family</label>
@@ -682,7 +553,7 @@ const ConfigurationPanel: React.FC<ConfigurationPanelProps> = React.memo(({
                             ? 'bg-slate-800 text-slate-400 cursor-wait' 
                             : state.scenarios.length > 0
                                 ? 'bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white shadow-indigo-500/25'
-                                : hasUnsavedChanges 
+                                : isConfigDrifted 
                                    ? 'bg-indigo-600 text-white shadow-indigo-500/40 animate-pulse-ring'
                                    : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700'
                       }`}
@@ -699,8 +570,8 @@ const ConfigurationPanel: React.FC<ConfigurationPanelProps> = React.memo(({
                           </>
                       ) : (
                           <>
-                            <Icons.Zap size={14} className={hasUnsavedChanges ? 'animate-pulse' : ''} />
-                            {hasUnsavedChanges ? 'Update Analysis' : 'Run Current Draft'}
+                            <Icons.Zap size={14} className={isConfigDrifted ? 'animate-pulse' : ''} />
+                            {isConfigDrifted ? 'Update Analysis' : 'Run Current Draft'}
                           </>
                       )}
                    </motion.button>
@@ -717,9 +588,73 @@ const ConfigurationPanel: React.FC<ConfigurationPanelProps> = React.memo(({
                  initial={{ opacity: 0, y: 10 }}
                  animate={{ opacity: 1, y: 0 }}
                  transition={{ delay: 0.1 }}
-                 className="card-panel p-5 relative overflow-hidden border-l-4 border-l-slate-400 dark:border-l-slate-600"
+                 className="card-panel p-5 relative overflow-hidden border-l-4 border-l-slate-400 dark:border-l-slate-600 space-y-4"
                >
-                   <div className="space-y-3">
+                   {/* Project ID Input - Moved here for visibility */}
+                   <div className="space-y-2">
+                       <label className="flex items-center gap-2 text-xs font-bold uppercase text-slate-500 dark:text-slate-400 tracking-wider">
+                            <Icons.Cloud size={12} /> Project ID <span className="text-indigo-500">*</span>
+                       </label>
+                       <div className="relative">
+                            <DebouncedInput 
+                                type="text" 
+                                value={state.project}
+                                onCommit={(val) => updateState({ project: val })}
+                                className={`w-full input-field font-mono text-sm py-2
+                                    ${showValidation 
+                                        ? isValidProject 
+                                            ? 'border-emerald-500 focus:border-emerald-500 focus:ring-emerald-500' 
+                                            : 'border-red-500 focus:border-red-500 bg-red-50/10'
+                                        : state.validationErrors?.project
+                                            ? 'border-red-500 focus:border-red-500 ring-1 ring-red-500 bg-red-50/10'
+                                            : ''
+                                    }
+                                `}
+                                placeholder="gcp-project-id"
+                            />
+                            {showValidation && (
+                                <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                                    {isValidProject ? (
+                                        <span className="text-emerald-500 animate-enter"><Icons.Check size={14} /></span>
+                                    ) : (
+                                        <span className="text-red-500 animate-enter"><Icons.Cancel size={14} /></span>
+                                    )}
+                                </div>
+                            )}
+                       </div>
+                       {/* Project ID Error Message */}
+                       <AnimatePresence>
+                            {showValidation && !isValidProject && !dismissedProjectError && (
+                                <motion.div
+                                    initial={{ opacity: 0, height: 0 }}
+                                    animate={{ opacity: 1, height: 'auto' }}
+                                    exit={{ opacity: 0, height: 0 }}
+                                    className="flex items-start gap-2 bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-900/50 rounded-lg p-2"
+                                >
+                                    <div className="text-red-500 shrink-0 mt-0.5"><Icons.Info size={12} /></div>
+                                    <div className="flex-1">
+                                        <p className="text-[10px] text-red-600 dark:text-red-300 font-medium leading-tight">
+                                            Invalid Project ID Format.
+                                        </p>
+                                        <p className="text-[9px] text-red-500 dark:text-red-400 mt-0.5 leading-tight">
+                                            Must be 6-30 chars, lowercase, digits, hyphens.
+                                        </p>
+                                    </div>
+                                    <button 
+                                        onClick={() => setDismissedProjectError(true)}
+                                        className="text-red-400 hover:text-red-600 dark:hover:text-red-200 transition-colors"
+                                    >
+                                        <Icons.Cancel size={12} />
+                                    </button>
+                                </motion.div>
+                            )}
+                       </AnimatePresence>
+                   </div>
+
+                   <div className="w-full h-px bg-slate-200 dark:bg-slate-700/50"></div>
+
+                   {/* Access Token Input */}
+                   <div className="space-y-2">
                        <div className="flex justify-between items-center">
                            <label className="flex items-center gap-2 text-xs font-bold uppercase text-slate-500 dark:text-slate-400 tracking-wider">
                                 <Icons.Key size={12} /> Access Token
@@ -764,7 +699,7 @@ const ConfigurationPanel: React.FC<ConfigurationPanelProps> = React.memo(({
                                    initial={{ opacity: 0, height: 0 }}
                                    animate={{ opacity: 1, height: 'auto' }}
                                    exit={{ opacity: 0, height: 0 }}
-                                   className="mt-2 flex items-start gap-2 bg-amber-50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-900/50 rounded-lg p-2"
+                                   className="flex items-start gap-2 bg-amber-50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-900/50 rounded-lg p-2"
                                >
                                    <div className="text-amber-500 shrink-0 mt-0.5"><Icons.Alert size={12} /></div>
                                    <div className="flex-1">

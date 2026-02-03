@@ -97,6 +97,7 @@ export interface BatchDebugEntry {
   status: 'pending' | 'loading' | 'success' | 'error';
   error?: string;
   timestamp: string;
+  geminiDebug?: GeminiDebugEntry | null;
 }
 
 export interface DebugData {
@@ -164,6 +165,18 @@ export interface ScenarioResult extends ScenarioConfig {
   groundingMetadata?: GroundingMetadata | null;
 }
 
+export interface RunConfig {
+  project: string;
+  region: string;
+  zones: string[];
+  selectedMachineType: string;
+  size: number;
+  targetShape: TargetShape;
+  workloadProfile: 'generic' | 'batch' | 'serving' | 'stateful';
+  growthScenario: 'steady' | 'daily_peak' | 'viral' | 'seasonal';
+  scenarios: ScenarioConfig[];
+}
+
 export interface AppState {
   // Draft State (The "Editor")
   project: string;
@@ -202,4 +215,5 @@ export interface AppState {
   lastSyncTime: string | null;
   syncError: string | null;
   tokenWarning: string | null;
+  lastRunConfig: RunConfig | null;
 }

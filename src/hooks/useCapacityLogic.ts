@@ -21,7 +21,6 @@ import {
 } from '../config';
 import { fetchAllZonesCapacity, fetchAvailableRegions, fetchMachineTypes, validateTokenScopes } from '../services/apiService';
 import { generateMockRecommendationsWithShape } from '../services/simulationEngine';
-import { useStreamAI } from './useStreamAI';
 import { 
   getFriendlyErrorMessage, 
   buildCapacityAdvisorRequest, 
@@ -75,7 +74,8 @@ const INITIAL_STATE: AppState = {
   workloadProfile: 'generic',
   growthScenario: 'steady',
   scenarios: [],
-  batchResults: []
+  batchResults: [],
+  lastRunConfig: null
 };
 
 // GCP Project ID Regex: 6-30 chars, lowercase, digits, hyphens.
@@ -140,17 +140,6 @@ export const useCapacityLogic = () => {
   const lastFetchTimeRef = useRef<number | null>(null);
   const staleToastShownRef = useRef<boolean>(false);
   const isFirstRender = useRef(true);
-
-  // --- AI Stream Hook ---
-  const { 
-    output: streamOutput, 
-    metadata: streamMetadata, 
-    debug: streamDebug, 
-    trigger: triggerStream, 
-    isStreaming, 
-    abort: abortStream,
-    reset: resetStream 
-  } = useStreamAI();
 
   // --- Helpers ---
   const addLog = useCallback((level: LogEntry['level'], message: string) => {
@@ -226,25 +215,7 @@ export const useCapacityLogic = () => {
     return () => clearInterval(interval);
   }, [state.result, addToast]);
 
-  // Sync AI Stream
-  useEffect(() => {
-    if (isStreaming || streamOutput) {
-        setState(prev => ({
-            ...prev,
-            groundingLoading: isStreaming && !streamOutput,
-            groundingMetadata: streamMetadata,
-            debugData: {
-                ...prev.debugData,
-                geminiDebug: streamDebug ? {
-                    prompt: streamDebug.prompt,
-                    responseRaw: streamOutput,
-                    model: streamDebug.model,
-                    timestamp: new Date().toISOString()
-                } : prev.debugData.geminiDebug
-            }
-        }));
-    }
-  }, [isStreaming, streamOutput, streamMetadata, streamDebug]);
+
 
   // Persist State & Theme
   useEffect(() => {
@@ -276,7 +247,6 @@ export const useCapacityLogic = () => {
         abortControllerRef.current.abort();
         abortControllerRef.current = null;
     }
-    resetStream();
     
     setState(prev => ({
         ...prev,
@@ -290,7 +260,7 @@ export const useCapacityLogic = () => {
             mode: prev.mockMode ? 'mock' : 'real' 
         }
     }));
-  }, [state.mockMode, resetStream]);
+  }, [state.mockMode]);
 
   // --- GCS History Sync ---
 
@@ -524,6 +494,55 @@ export const useCapacityLogic = () => {
       }));
   }, []);
 
+  // Configuration Drift Detection
+  const isConfigDrifted = useMemo(() => {
+      if (!state.lastRunConfig) return false;
+      if (state.loading) return false; // Don't show drift while running
+
+      const currentConfig = {
+          project: state.project,
+          region: state.region,
+          zones: state.zones,
+          selectedMachineType: state.selectedMachineType,
+          size: state.size,
+          targetShape: state.targetShape,
+          workloadProfile: state.workloadProfile,
+          growthScenario: state.growthScenario,
+          scenarios: state.scenarios
+      };
+
+      const last = state.lastRunConfig;
+      
+      // Deep comparison for scenarios array
+      const scenariosChanged = JSON.stringify(currentConfig.scenarios) !== JSON.stringify(last.scenarios);
+      
+      // Comparison for zones array
+      const zonesChanged = JSON.stringify(currentConfig.zones.sort()) !== JSON.stringify(last.zones.sort());
+
+      return (
+          currentConfig.project !== last.project ||
+          currentConfig.region !== last.region ||
+          zonesChanged ||
+          currentConfig.selectedMachineType !== last.selectedMachineType ||
+          currentConfig.size !== last.size ||
+          currentConfig.targetShape !== last.targetShape ||
+          currentConfig.workloadProfile !== last.workloadProfile ||
+          currentConfig.growthScenario !== last.growthScenario ||
+          scenariosChanged
+      );
+  }, [state]);
+
+  // Toast for Drift
+  const driftToastShownRef = useRef(false);
+  useEffect(() => {
+      if (isConfigDrifted && !driftToastShownRef.current) {
+          addToast('info', 'Configuration Changed', 'Your settings have changed since the last run. Click "Run Analysis" to update results.');
+          driftToastShownRef.current = true;
+      } else if (!isConfigDrifted) {
+          driftToastShownRef.current = false;
+      }
+  }, [isConfigDrifted, addToast]);
+
   const runBatchAnalysis = async () => {
     // If no scenarios, treat current draft as one
     let scenariosToRun = state.scenarios;
@@ -573,11 +592,25 @@ export const useCapacityLogic = () => {
         status: 'pending'
     }));
 
+    // Save Run Config
+    const currentRunConfig = {
+          project: state.project,
+          region: state.region,
+          zones: state.zones,
+          selectedMachineType: state.selectedMachineType,
+          size: state.size,
+          targetShape: state.targetShape,
+          workloadProfile: state.workloadProfile,
+          growthScenario: state.growthScenario,
+          scenarios: state.scenarios
+    };
+
     updateState({ 
         loading: true, 
         batchResults: initialResults,
         result: null, // Clear legacy single result
-        error: null
+        error: null,
+        lastRunConfig: currentRunConfig
     });
 
     // Execute in Parallel with Concurrency Limit
@@ -804,7 +837,6 @@ export const useCapacityLogic = () => {
 
   const toggleFamily = useCallback((family: string) => {
     if (state.result) {
-        resetStream();
         addToast(
             'info',
             'Filter Changed',
@@ -842,7 +874,7 @@ export const useCapacityLogic = () => {
             groundingMetadata: shouldReset ? null : prev.groundingMetadata
         };
     });
-  }, [state.result, resetStream]);
+  }, [state.result, addToast]);
 
   const handleExport = useCallback((type: 'csv' | 'html' | 'pdf' | 'json') => {
     if (!state.result) return;
@@ -853,7 +885,6 @@ export const useCapacityLogic = () => {
   }, [state.result, state.project, state.groundingMetadata]);
 
   const clearResults = useCallback(() => {
-      resetStream();
       if (abortControllerRef.current) {
           abortControllerRef.current.abort();
           abortControllerRef.current = null;
@@ -880,7 +911,7 @@ export const useCapacityLogic = () => {
           batchResults: []
       }));
       addToast('info', 'Workspace Reset', 'All data has been cleared. You are ready to configure a new analysis.');
-  }, [resetStream, addToast]);
+  }, [addToast]);
 
   const filteredMachineTypes = useMemo(() => {
      if (state.selectedFamilies.includes('All')) return availableMachineTypes;
@@ -950,7 +981,6 @@ export const useCapacityLogic = () => {
     machineDetails: availableMachineTypes.find(m => m.id === state.selectedMachineType) || STATIC_MACHINE_TYPES.find(m => m.id === state.selectedMachineType),
     removeToast,
     regionConfig,
-    isStreaming,
     toggleComparisonMode,
     selectRunForComparison,
     deleteRun,
@@ -959,6 +989,7 @@ export const useCapacityLogic = () => {
     removeScenario,
     addToast,
     retryScenario,
-    resetApplication
+    resetApplication,
+    isConfigDrifted
   };
 };

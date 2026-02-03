@@ -4,6 +4,17 @@ import { streamGroundingInsights, streamComparisonInsights } from '../services/g
 import { AppState, GroundingMetadata } from '../types';
 import { MachineTypeOption } from '../config';
 
+const CACHE_TTL = 60 * 1000; // 60 seconds
+
+interface CacheEntry {
+  timestamp: number;
+  output: string;
+  metadata: GroundingMetadata | null;
+  debug: any;
+}
+
+const aiCache = new Map<string, CacheEntry>();
+
 export const useStreamAI = () => {
   const [output, setOutput] = useState('');
   const [metadata, setMetadata] = useState<GroundingMetadata | null>(null);
@@ -12,12 +23,38 @@ export const useStreamAI = () => {
   
   // Ref to track if unmounted
   const isMounted = useRef(true);
+  
+  // Refs for throttling
+  const outputBuffer = useRef('');
+  const rafId = useRef<number | null>(null);
 
-  const trigger = useCallback(async (state: AppState, machineDetails: MachineTypeOption | undefined, apiResponse?: any) => {
+  const flushBuffer = useCallback(() => {
+    if (outputBuffer.current) {
+        setOutput(prev => prev + outputBuffer.current);
+        outputBuffer.current = '';
+    }
+    rafId.current = null;
+  }, []);
+
+  const trigger = useCallback(async (cacheKey: string, state: AppState, machineDetails: MachineTypeOption | undefined, apiResponse?: any) => {
+    const cached = aiCache.get(cacheKey);
+
+    if (cached && (Date.now() - cached.timestamp < CACHE_TTL)) {
+        setOutput(cached.output);
+        setMetadata(cached.metadata);
+        setDebug(cached.debug);
+        return;
+    }
+
     setIsStreaming(true);
     setOutput('');
     setMetadata(null);
     setDebug(null);
+    outputBuffer.current = '';
+
+    let fullText = '';
+    let finalMetadata: GroundingMetadata | null = null;
+    let finalDebug: any = null;
 
     try {
       const stream = streamGroundingInsights(state, machineDetails, apiResponse);
@@ -26,25 +63,60 @@ export const useStreamAI = () => {
         if (!isMounted.current) break;
 
         if (chunk.type === 'text') {
-          setOutput(prev => prev + chunk.content);
+          outputBuffer.current += chunk.content;
+          fullText += chunk.content;
+          
+          // Throttle updates to ~60fps (16ms) or just let RAF handle it
+          if (!rafId.current) {
+              rafId.current = requestAnimationFrame(flushBuffer);
+          }
         } else if (chunk.type === 'metadata') {
           setMetadata(chunk.content);
+          finalMetadata = chunk.content;
         } else if (chunk.type === 'debug') {
           setDebug(chunk.content);
+          finalDebug = chunk.content;
         }
       }
+      
+      // Final flush
+      flushBuffer();
+
+      // Cache the result
+      if (fullText || finalMetadata) {
+          aiCache.set(cacheKey, {
+              timestamp: Date.now(),
+              output: fullText,
+              metadata: finalMetadata,
+              debug: finalDebug
+          });
+      }
+      
     } catch (error) {
       console.error("Stream error:", error);
     } finally {
       if (isMounted.current) setIsStreaming(false);
     }
-  }, []);
+  }, [flushBuffer]);
 
-  const triggerComparison = useCallback(async (items: any[]) => {
+  const triggerComparison = useCallback(async (cacheKey: string, items: any[]) => {
+    const cached = aiCache.get(cacheKey);
+
+    if (cached && (Date.now() - cached.timestamp < CACHE_TTL)) {
+        setOutput(cached.output);
+        setMetadata(cached.metadata);
+        setDebug(cached.debug);
+        return;
+    }
+
     setIsStreaming(true);
     setOutput('');
     setMetadata(null);
     setDebug(null);
+    outputBuffer.current = '';
+
+    let fullText = '';
+    let finalDebug: any = null;
 
     try {
       const stream = streamComparisonInsights(items);
@@ -53,34 +125,59 @@ export const useStreamAI = () => {
         if (!isMounted.current) break;
 
         if (chunk.type === 'text') {
-          setOutput(prev => prev + chunk.content);
+          outputBuffer.current += chunk.content;
+          fullText += chunk.content;
+
+          if (!rafId.current) {
+              rafId.current = requestAnimationFrame(flushBuffer);
+          }
         } else if (chunk.type === 'debug') {
           setDebug(chunk.content);
+          finalDebug = chunk.content;
         }
       }
+      
+      flushBuffer();
+
+      // Cache the result
+      if (fullText) {
+          aiCache.set(cacheKey, {
+              timestamp: Date.now(),
+              output: fullText,
+              metadata: null,
+              debug: finalDebug
+          });
+      }
+      
     } catch (error) {
       console.error("Stream comparison error:", error);
     } finally {
       if (isMounted.current) setIsStreaming(false);
     }
-  }, []);
+  }, [flushBuffer]);
 
   const reset = useCallback(() => {
     setOutput('');
     setMetadata(null);
     setDebug(null);
     setIsStreaming(false);
+    outputBuffer.current = '';
+    if (rafId.current) cancelAnimationFrame(rafId.current);
   }, []);
 
   const abort = useCallback(() => {
       // In a real implementation, we would pass an AbortSignal to the service
       setIsStreaming(false);
+      if (rafId.current) cancelAnimationFrame(rafId.current);
   }, []);
 
   // Cleanup
   useEffect(() => {
       isMounted.current = true;
-      return () => { isMounted.current = false; };
+      return () => { 
+          isMounted.current = false; 
+          if (rafId.current) cancelAnimationFrame(rafId.current);
+      };
   }, []);
 
   // Memoize the derived metadata to prevent infinite loops in consumers

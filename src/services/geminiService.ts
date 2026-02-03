@@ -157,7 +157,7 @@ ${apiDataSummary}
 2.  **Product Availability:** Search for "${state.selectedMachineType} availability ${state.region} google cloud documentation" to confirm it exists in this region.
 3.  **Regional Events:** Search for "Tech conferences holidays weather ${state.region} ${today.toLocaleString('default', { month: 'long' })} ${today.getFullYear()}" to assess demand spikes.
 4.  **Official Comms:** Search for "Google Cloud Compute Engine blog posts ${today.getFullYear()}" for recent spot updates.
-5.  **Alternatives Analysis:** ${isConstrained ? `**CRITICAL:** The API reports low obtainability (${topObtainability}%). Search for "Google Cloud Compute Engine machine type comparison ${family}" to find modern alternatives (e.g., C3, C4, N4, C4A, N2D). Compare their Spot availability and price-performance.` : `Search for "Google Cloud Compute Engine machine type comparison ${family}" to validate if this is the best choice.`}
+5.  **Alternatives Analysis:** ${isConstrained ? `**CRITICAL SCARCITY DETECTED:** The API reports low obtainability (${topObtainability}%). You **MUST** search for "Google Cloud Compute Engine machine type comparison ${family}" to find specific, modern alternative machine types (e.g., C3, C4, N4, C4A, N2D) that are likely to have better Spot availability in ${state.region}. Prioritize newer generations or AMD-based instances (T2D, N2D) which often have deeper pools.` : `Search for "Google Cloud Compute Engine machine type comparison ${family}" to validate if this is the best choice.`}
 
 ### REAL-TIME CONTEXT
 - **Current Time:** ${dateString} ${timeString}

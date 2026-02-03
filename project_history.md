@@ -2,7 +2,7 @@
 
 ## 1. Executive Summary
 **Name:** Spot Capacity Advisor
-**Version:** 2.18.1
+**Version:** 2.18.2
 **Description:** Enterprise-grade Google Cloud Spot Capacity Advisor with Optimized Performance and AI Insights.
 **Purpose:** To assist Cloud Architects and FinOps practitioners in identifying the optimal Google Cloud regions and zones for Spot VM deployments, minimizing preemption risk and maximizing obtainability.
 **Tech Stack:** React 18, TypeScript, Vite, Tailwind CSS, Framer Motion, Recharts, Google GenAI SDK.
@@ -351,11 +351,16 @@ The project leverages a modern, robust ecosystem of React libraries. Here is a d
 
 ---
 
-## 10. Recent Changelog (v2.18.1)
--   **Feature:** Added `retryScenario` to allow re-running specific failed batch items.
+## 10. Recent Changelog (v2.18.2)
+-   **Performance:** Implemented 60s TTL Caching for AI Insights (`useStreamAI`) to prevent redundant API calls on UI interactions.
+-   **UX:** Enhanced "Configuration Drift" detection. The Run button now visually pulses and changes text to "Update Analysis" when settings are modified after a run.
+-   **UI Polish:**
+    -   Refined `card-panel` with subtle inner rings and hover lift effects.
+    -   Redesigned `ResultsDashboard` empty state for a better onboarding experience.
+    -   Added `CommandCell` to Comparison View for one-click command copying.
+    -   Standardized typography: **Inter** (Body), **Space Grotesk** (Headings/Display), **JetBrains Mono** (Code).
+-   **Feature:** Added "Top Pick" ribbon and expanded details view to `ZoneComparisonChart`.
 -   **Feature:** Added `resetApplication` for a full factory reset.
--   **UX:** Implemented "Configuration Drift" detection (Blinking Run button + Toast).
--   **Docs:** Major expansion of `project_history.md` (this file).
 -   **Security:** Enhanced token validation logic in `validateTokenScopes`.
 
 ---

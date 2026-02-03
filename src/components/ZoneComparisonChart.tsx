@@ -193,16 +193,16 @@ gcloud compute instances create ${getNames(`spot-${randomId}`, totalCount)} \\
     >
       {/* Best Badge */}
       {index === 0 && (
-          <div className="absolute top-0 right-0 z-20">
-              <div className="bg-gradient-to-bl from-indigo-500 to-purple-600 text-white text-[9px] font-bold uppercase py-1 px-3 rounded-bl-xl shadow-sm">
-                  Top Recommendation
+          <div className="absolute top-0 right-0 z-20 pointer-events-none">
+              <div className="bg-gradient-to-bl from-indigo-500 to-violet-600 text-white text-[9px] font-black uppercase py-1.5 px-3 rounded-bl-xl shadow-lg shadow-indigo-500/20 tracking-wider">
+                  Top Pick
               </div>
           </div>
       )}
 
       <div 
         onClick={() => onToggle(index)}
-        className="p-5 cursor-pointer"
+        className="p-5 cursor-pointer relative z-10"
       >
         <div className="flex flex-col md:flex-row gap-8 items-center">
             
@@ -284,7 +284,7 @@ gcloud compute instances create ${getNames(`spot-${randomId}`, totalCount)} \\
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="border-t border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/50"
+            className="border-t border-slate-100 dark:border-slate-700 bg-slate-50/80 dark:bg-black/20 backdrop-blur-sm"
         >
             <div className="p-6">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -306,14 +306,14 @@ gcloud compute instances create ${getNames(`spot-${randomId}`, totalCount)} \\
                                         <div className="w-24 text-xs font-mono font-bold text-slate-600 dark:text-slate-300 truncate text-right">
                                             {zoneName}
                                         </div>
-                                        <div className="flex-1 h-8 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden relative flex items-center px-3">
+                                        <div className="flex-1 h-8 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden relative flex items-center px-3 shadow-sm">
                                             <div 
-                                                className="absolute inset-y-0 left-0 bg-indigo-50 dark:bg-indigo-900/20 transition-all duration-500"
+                                                className="absolute inset-y-0 left-0 bg-indigo-50 dark:bg-indigo-500/10 transition-all duration-500"
                                                 style={{ width: `${percentage}%` }}
                                             ></div>
                                             <div className="relative z-10 flex justify-between w-full text-xs">
                                                 <span className="font-bold text-slate-900 dark:text-white">{count} VMs</span>
-                                                <span className="text-slate-400">{percentage}%</span>
+                                                <span className="text-slate-400 font-mono">{percentage}%</span>
                                             </div>
                                         </div>
                                     </div>
@@ -342,10 +342,10 @@ gcloud compute instances create ${getNames(`spot-${randomId}`, totalCount)} \\
                             </div>
                          </div>
                          
-                         <div className="flex-1 bg-slate-900 rounded-xl border border-slate-800 overflow-hidden shadow-inner relative group/code">
+                         <div className="flex-1 bg-[#0f172a] dark:bg-[#020617] rounded-xl border border-slate-800 overflow-hidden shadow-inner relative group/code">
                             <div className="absolute top-3 right-3 z-10">
                                 <button 
-                                    className="p-2 bg-slate-800 hover:bg-indigo-600 text-slate-400 hover:text-white rounded-lg transition-all opacity-0 group-hover/code:opacity-100 shadow-lg border border-slate-700 hover:border-indigo-500"
+                                    className="p-2 bg-slate-800/80 hover:bg-indigo-600 text-slate-400 hover:text-white rounded-lg transition-all opacity-0 group-hover/code:opacity-100 shadow-lg border border-slate-700 hover:border-indigo-500 backdrop-blur-sm"
                                     onClick={(e) => { 
                                         e.stopPropagation(); 
                                         handleCopy(provisioningCommand);

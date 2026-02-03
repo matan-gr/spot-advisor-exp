@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { GroundingMetadata } from '../types';
 import { Icons } from '../constants';
 import { motion, AnimatePresence } from 'framer-motion';
+import ReactMarkdown from 'react-markdown';
 
 interface GeminiCardProps {
   data: GroundingMetadata | null;
@@ -29,7 +30,7 @@ const LoadingStateDisplay = () => {
   const CurrentIcon = steps[stepIndex].Icon;
 
   return (
-    <div className="h-full card-panel p-8 flex flex-col justify-center animate-enter relative overflow-hidden min-h-[300px] bg-slate-50/50 dark:bg-slate-900/50 backdrop-blur-sm">
+    <div className="h-full card-panel p-8 flex flex-col justify-center animate-enter relative overflow-hidden min-h-[600px] bg-slate-50/50 dark:bg-slate-900/50 backdrop-blur-sm">
         <div className="absolute inset-0 opacity-30 dark:opacity-10 pointer-events-none">
             <div className="absolute top-[-50%] left-[-50%] w-[200%] h-[200%] bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-indigo-500/20 via-transparent to-transparent animate-spin-slow"></div>
         </div>
@@ -50,7 +51,7 @@ const LoadingStateDisplay = () => {
                 </div>
             </div>
             <div className="space-y-3 w-full max-w-xs mx-auto">
-                <h4 className="text-xs font-black uppercase text-indigo-500 dark:text-indigo-400 tracking-[0.2em]">
+                <h4 className="text-xs font-black uppercase text-indigo-500 dark:text-indigo-400 tracking-[0.2em] font-display">
                     AI Analysis in Progress
                 </h4>
                 <div className="h-8 relative overflow-hidden">
@@ -81,72 +82,6 @@ const LoadingStateDisplay = () => {
   );
 };
 
-const parseInline = (text: string, keyPrefix: string) => {
-  if (!text) return [];
-  
-  const parts = text.split(/(\*\*.*?\*\*|`.*?`|\*.*?\*)/g);
-  
-  return parts.map((part, i) => {
-    if (part.startsWith('**') && part.endsWith('**')) {
-      return <strong key={`${keyPrefix}-${i}`} className="font-bold text-slate-900 dark:text-white drop-shadow-sm">{part.slice(2, -2)}</strong>;
-    }
-    if (part.startsWith('`') && part.endsWith('`')) {
-      return <code key={`${keyPrefix}-${i}`} className="font-mono text-[11px] bg-slate-100 dark:bg-indigo-500/20 px-1.5 py-0.5 rounded text-indigo-600 dark:text-indigo-200 border border-slate-200 dark:border-indigo-500/30 mx-0.5 shadow-sm">{part.slice(1, -1)}</code>;
-    }
-    if (part.startsWith('*') && part.endsWith('*')) {
-        return <em key={`${keyPrefix}-${i}`} className="italic text-slate-500 dark:text-slate-400">{part.slice(1, -1)}</em>;
-    }
-    return <span key={`${keyPrefix}-${i}`} className="text-slate-600 dark:text-slate-300">{part}</span>;
-  });
-};
-
-const renderTable = (lines: string[], keyPrefix: string, searchTerm: string) => {
-    if (!lines || lines.length === 0) return null;
-    const headerLine = lines[0];
-    const headers = headerLine.split('|').map(c => c.trim()).filter(c => c);
-    const dataLines = lines.slice(2).filter(l => l.trim().length > 0);
-
-    const filteredDataLines = searchTerm 
-        ? dataLines.filter(line => line.toLowerCase().includes(searchTerm.toLowerCase()))
-        : dataLines;
-
-    if (searchTerm && filteredDataLines.length === 0 && !headerLine.toLowerCase().includes(searchTerm.toLowerCase())) {
-        return null;
-    }
-
-    return (
-        <div key={keyPrefix} className="my-6 overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700/50 bg-slate-50 dark:bg-slate-900/40 shadow-lg">
-            <div className="overflow-x-auto custom-scrollbar">
-              <table className="w-full text-xs text-left border-collapse">
-                  <thead>
-                      <tr className="bg-slate-100/50 dark:bg-slate-800/60 border-b border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400">
-                          {headers.map((h, i) => (
-                              <th key={i} className="px-4 py-3 font-black uppercase tracking-wider whitespace-nowrap text-[10px] text-slate-700 dark:text-indigo-300">
-                                  {parseInline(h, `th-${i}`)}
-                              </th>
-                          ))}
-                      </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-200 dark:divide-slate-700/30">
-                      {filteredDataLines.map((line, rIdx) => {
-                          const cells = line.split('|').map(c => c.trim()).filter(c => c !== '');
-                          return (
-                            <tr key={rIdx} className="hover:bg-slate-100 dark:hover:bg-slate-800/40 transition-colors group">
-                                {cells.map((cell, cIdx) => (
-                                    <td key={cIdx} className="px-4 py-3 text-slate-600 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white transition-colors whitespace-nowrap font-medium">
-                                        {parseInline(cell, `td-${rIdx}-${cIdx}`)}
-                                    </td>
-                                ))}
-                            </tr>
-                          );
-                      })}
-                  </tbody>
-              </table>
-            </div>
-        </div>
-    );
-};
-
 const GeminiCard = React.memo(({ data, loading }: GeminiCardProps) => {
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -154,195 +89,13 @@ const GeminiCard = React.memo(({ data, loading }: GeminiCardProps) => {
 
   if (!data) {
     return (
-      <div className="h-full bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-dashed border-slate-200 dark:border-slate-700 p-8 flex flex-col justify-center items-center text-center opacity-60 min-h-[300px]">
+      <div className="h-full bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-dashed border-slate-200 dark:border-slate-700 p-8 flex flex-col justify-center items-center text-center opacity-60 min-h-[600px]">
          <div className="text-slate-300 dark:text-slate-600 mb-3"><Icons.Cloud /></div>
          <p className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">AI Capacity Advisor</p>
          <p className="text-[11px] text-slate-400 dark:text-slate-600 mt-1 max-w-[240px]">Strategic insights and recommendations will appear here following the capacity analysis.</p>
       </div>
     );
   }
-
-  const renderContent = (text: string) => {
-    if (!text) return null;
-    const lines = text.split('\n');
-    const elements: React.ReactNode[] = [];
-    
-    let tableBuffer: string[] = [];
-    let inTable = false;
-    let listBuffer: React.ReactNode[] = [];
-    let inList = false;
-
-    const flushList = (idx: number) => {
-        if (listBuffer.length > 0) {
-            elements.push(
-                <div key={`list-group-${idx}`} className="mb-4 space-y-2 pl-1">
-                    {listBuffer}
-                </div>
-            );
-            listBuffer = [];
-        }
-    };
-
-    const lowerSearch = searchTerm.toLowerCase();
-
-    for (let i = 0; i < lines.length; i++) {
-        const line = lines[i].trim();
-
-        // --- Table Handling ---
-        if (line.startsWith('|')) {
-            if (inList) { inList = false; flushList(i); }
-            inTable = true;
-            tableBuffer.push(line);
-            continue;
-        }
-        if (inTable) {
-            inTable = false;
-            elements.push(renderTable(tableBuffer, `table-${i}`, searchTerm));
-            tableBuffer = [];
-        }
-
-        if (!line) {
-            if (inList) { inList = false; flushList(i); }
-            continue;
-        }
-
-        // --- Header Handling ---
-        if (line.startsWith('#')) {
-            if (inList) { inList = false; flushList(i); }
-            
-            const level = line.match(/^#+/)?.[0].length || 0;
-            const content = line.replace(/^#+\s*/, '').trim();
-            
-            if (level === 1) {
-                elements.push(
-                    <div key={`h1-${i}`} className="flex items-center gap-3 mt-8 mb-6 pb-3 border-b border-slate-200 dark:border-slate-700/50">
-                        <div className="p-1.5 rounded bg-indigo-50 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400"><Icons.Chip size={18} /></div>
-                        <h1 className="text-lg font-black uppercase text-slate-900 dark:text-white tracking-widest leading-none shadow-black drop-shadow-md">
-                            {content}
-                        </h1>
-                    </div>
-                );
-            } else if (level === 2) {
-                elements.push(
-                    <div key={`h2-${i}`} className="flex items-center gap-2 mt-6 mb-4">
-                        <span className="text-indigo-600 dark:text-indigo-400"><Icons.ChevronRight size={14} /></span>
-                        <h2 className="text-sm font-bold uppercase text-indigo-700 dark:text-indigo-200 tracking-wider">
-                            {content}
-                        </h2>
-                    </div>
-                );
-            } else {
-                elements.push(
-                    <div key={`h3-${i}`} className="flex items-center gap-2 mt-4 mb-2">
-                        <div className="w-1 h-1 rounded-full bg-slate-400 dark:bg-slate-400"></div>
-                        <h3 className="text-xs font-bold uppercase text-slate-700 dark:text-slate-300 tracking-wide">
-                            {content}
-                        </h3>
-                    </div>
-                );
-            }
-            continue;
-        }
-
-        // --- Blockquote Handling ---
-        if (line.startsWith('>')) {
-            if (inList) { inList = false; flushList(i); }
-            const content = line.replace(/^>\s?/, '').trim();
-            
-            if (searchTerm && !content.toLowerCase().includes(lowerSearch)) continue;
-
-            const isWarning = content.toLowerCase().includes('warning') || content.toLowerCase().includes('alert') || content.toLowerCase().includes('caution');
-            const isProTip = content.toLowerCase().includes('pro tip') || content.toLowerCase().includes('strategy') || content.toLowerCase().includes('recommendation');
-            
-            let borderClass = "border-l-2 border-slate-300 dark:border-slate-600";
-            let bgClass = "bg-slate-50 dark:bg-slate-800/50";
-            let textClass = "text-slate-600 dark:text-slate-300";
-            let icon = <Icons.Info size={14} className="text-slate-400 dark:text-slate-400" />;
-            
-            if (isWarning) {
-                borderClass = "border-l-2 border-amber-500";
-                bgClass = "bg-amber-50 dark:bg-amber-500/10";
-                textClass = "text-amber-800 dark:text-amber-100";
-                icon = <Icons.Alert size={14} className="text-amber-600 dark:text-amber-400" />;
-            } else if (isProTip) {
-                borderClass = "border-l-2 border-emerald-500";
-                bgClass = "bg-emerald-50 dark:bg-emerald-500/10";
-                textClass = "text-emerald-800 dark:text-emerald-100";
-                icon = <Icons.Check size={14} className="text-emerald-600 dark:text-emerald-400" />;
-            }
-
-            elements.push(
-                <div key={`bq-${i}`} className={`${bgClass} ${borderClass} px-4 py-3 rounded-r-lg mb-4 text-xs leading-relaxed ${textClass} shadow-sm flex gap-3`}>
-                    <div className="shrink-0 mt-0.5">{icon}</div>
-                    <div>{parseInline(content, `bq-${i}`)}</div>
-                </div>
-            );
-            continue;
-        }
-
-        // --- List Handling (Unordered & Numbered) ---
-        const isUnordered = line.startsWith('* ') || line.startsWith('- ');
-        const isNumbered = /^\d+\.\s/.test(line);
-
-        if (isUnordered || isNumbered) {
-            inList = true;
-            const content = line.replace(/^(\* |-\ |\d+\.\ )/, '').trim();
-            
-            if (searchTerm && !content.toLowerCase().includes(lowerSearch)) continue;
-
-            listBuffer.push(
-                <div key={`li-${i}`} className="flex items-start gap-3 relative group/list">
-                   {isUnordered ? (
-                       <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.5)] shrink-0 group-hover/list:scale-125 transition-transform"></div>
-                   ) : (
-                       <span className="text-[10px] font-mono font-bold text-indigo-600 dark:text-indigo-400 mt-0.5 min-w-[16px]">{line.match(/^\d+/)?.[0]}.</span>
-                   )}
-                   <span className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed group-hover/list:text-slate-900 dark:group-hover/list:text-slate-100 transition-colors">
-                      {parseInline(content, `li-${i}`)}
-                   </span>
-                </div>
-            );
-            continue;
-        }
-        
-        // --- Checklist Handling ---
-        if (line.startsWith('[ ]') || line.startsWith('[x]')) {
-             if (inList) { inList = false; flushList(i); }
-             const isChecked = line.startsWith('[x]');
-             const content = line.substring(3).trim();
-
-             if (searchTerm && !content.toLowerCase().includes(lowerSearch)) continue;
-
-             elements.push(
-                 <div key={`chk-${i}`} className={`flex items-start gap-3 mb-2 p-3 rounded-lg border transition-all ${isChecked ? 'bg-emerald-50 dark:bg-emerald-500/10 border-emerald-200 dark:border-emerald-500/20' : 'bg-white dark:bg-white/5 border-slate-200 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/10'}`}>
-                     <div className={`mt-0.5 w-4 h-4 rounded border flex items-center justify-center shrink-0 ${isChecked ? 'bg-emerald-500 border-emerald-500 text-white shadow-[0_0_10px_rgba(16,185,129,0.3)]' : 'bg-transparent border-slate-300 dark:border-slate-600'}`}>
-                         {isChecked && <Icons.Check size={10} />}
-                     </div>
-                     <span className={`text-xs font-medium leading-snug ${isChecked ? 'text-emerald-700 dark:text-emerald-200' : 'text-slate-600 dark:text-slate-300'}`}>
-                        {parseInline(content, `chk-${i}`)}
-                     </span>
-                 </div>
-             );
-             continue;
-        }
-
-        // --- Paragraph Handling ---
-        if (inList) { inList = false; flushList(i); }
-        
-        if (searchTerm && !line.toLowerCase().includes(lowerSearch)) continue;
-
-        elements.push(
-            <p key={`p-${i}`} className="text-sm text-slate-600 dark:text-slate-300 mb-4 leading-relaxed tracking-wide">
-                {parseInline(line, `p-${i}`)}
-            </p>
-        );
-    }
-    
-    if (inList) flushList(lines.length);
-    if (inTable) elements.push(renderTable(tableBuffer, `table-end`, searchTerm));
-    
-    return elements;
-  };
 
   return (
     <div className="h-full card-panel flex flex-col overflow-hidden animate-enter border border-slate-200 dark:border-slate-700 shadow-xl shadow-slate-200/50 dark:shadow-black/50 bg-white dark:bg-slate-900">
@@ -376,7 +129,37 @@ const GeminiCard = React.memo(({ data, loading }: GeminiCardProps) => {
        
        <div className="p-8 flex-grow overflow-y-auto custom-scrollbar bg-slate-50/30 dark:bg-slate-900/30">
           <div className="max-w-4xl mx-auto space-y-2">
-            {renderContent(data.insight)}
+            <div className="prose prose-sm dark:prose-invert max-w-none
+                    prose-headings:font-display
+                    prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-slate-900 dark:prose-headings:text-white
+                    prose-h1:text-lg prose-h1:uppercase prose-h1:tracking-widest prose-h1:border-b prose-h1:border-slate-200 dark:prose-h1:border-slate-700 prose-h1:pb-2 prose-h1:mb-4
+                    prose-h2:text-sm prose-h2:uppercase prose-h2:text-indigo-600 dark:prose-h2:text-indigo-400 prose-h2:mt-6 prose-h2:mb-3
+                    prose-h3:text-xs prose-h3:uppercase prose-h3:text-slate-700 dark:prose-h3:text-slate-300 prose-h3:mt-4 prose-h3:mb-2
+                    prose-p:text-slate-600 dark:prose-p:text-slate-300 prose-p:leading-relaxed prose-p:mb-4
+                    prose-strong:text-slate-900 dark:prose-strong:text-white prose-strong:font-bold
+                    prose-ul:list-disc prose-ul:pl-4 prose-ul:space-y-1
+                    prose-ol:list-decimal prose-ol:pl-4 prose-ol:space-y-1
+                    prose-li:text-slate-600 dark:prose-li:text-slate-300 prose-li:text-sm
+                    prose-blockquote:border-l-4 prose-blockquote:border-indigo-500 prose-blockquote:bg-indigo-50 dark:prose-blockquote:bg-indigo-900/20 prose-blockquote:pl-4 prose-blockquote:py-1 prose-blockquote:pr-2 prose-blockquote:rounded-r-lg prose-blockquote:italic prose-blockquote:text-slate-600 dark:prose-blockquote:text-slate-300
+                    prose-table:w-full prose-table:text-xs prose-table:text-left prose-table:border-collapse prose-table:my-6 prose-table:rounded-xl prose-table:overflow-hidden prose-table:border prose-table:border-slate-200 dark:prose-table:border-slate-700
+                    prose-th:px-4 prose-th:py-3 prose-th:bg-slate-100 dark:prose-th:bg-slate-800 prose-th:font-bold prose-th:uppercase prose-th:text-slate-700 dark:prose-th:text-slate-300 prose-th:border-b prose-th:border-slate-200 dark:prose-th:border-slate-700
+                    prose-td:px-4 prose-td:py-3 prose-td:border-b prose-td:border-slate-100 dark:prose-td:border-slate-800 prose-td:text-slate-600 dark:prose-td:text-slate-300
+                    prose-code:font-mono prose-code:text-[11px] prose-code:bg-slate-100 dark:prose-code:bg-slate-800 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-indigo-600 dark:prose-code:text-indigo-300 prose-code:before:content-none prose-code:after:content-none
+                ">
+                <ReactMarkdown
+                    components={{
+                        // Custom renderer for blockquotes to handle alerts/warnings
+                        blockquote: ({node, children, ...props}) => {
+                            // We can't easily inspect children text here without rendering, 
+                            // but we can just apply a generic nice style or try to use the class logic if we could access text.
+                            // For now, the prose-blockquote class above handles the base style.
+                            return <blockquote {...props}>{children}</blockquote>;
+                        }
+                    }}
+                >
+                    {data.insight}
+                </ReactMarkdown>
+            </div>
           </div>
        </div>
 

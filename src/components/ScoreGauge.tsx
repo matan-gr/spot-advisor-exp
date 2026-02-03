@@ -148,7 +148,7 @@ const ScoreGauge = React.memo(({ score, label, description, delay = 0 }: ScoreGa
                         className="flex flex-col items-center justify-center text-center w-full"
                     >
                         <div className="flex items-baseline justify-center relative left-1">
-                            <span className="text-5xl font-black text-slate-800 dark:text-slate-100 tabular-nums tracking-tighter drop-shadow-sm">
+                            <span className="text-5xl font-black text-slate-800 dark:text-slate-100 tabular-nums tracking-tighter drop-shadow-sm font-display">
                                 <Counter value={percentage} />
                             </span>
                             <span className="text-sm font-bold text-slate-400 dark:text-slate-500 ml-0.5">%</span>

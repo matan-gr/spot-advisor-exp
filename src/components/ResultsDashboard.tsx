@@ -1,5 +1,5 @@
 import React, { Suspense, useState, useEffect } from 'react';
-import { AppState, ScenarioResult, Toast } from '../types';
+import { AppState, ScenarioResult, Toast, GeminiDebugEntry } from '../types';
 import { Icons } from '../constants';
 import { SkeletonCard, DistributionSkeleton, GeminiSkeleton } from './SkeletonCard';
 import { getScoreValue } from '../utils';
@@ -21,24 +21,33 @@ const BatchResultCard = ({
     isSelected, 
     onSelect, 
     onToggleExpand, 
-    isExpanded 
+    isExpanded,
+    onUpdateBatchDebug
 }: { 
     result: ScenarioResult, 
     isSelected: boolean, 
     onSelect: () => void,
     onToggleExpand: () => void,
-    isExpanded: boolean
+    isExpanded: boolean,
+    onUpdateBatchDebug?: (scenarioId: string, debug: GeminiDebugEntry) => void
 }) => {
     const rawScore = result.response ? getScoreValue(result.response.recommendations?.[0], 'obtainability') : 0;
     const score = rawScore * 100;
     
     // AI Integration for this specific card
-    const { output, metadata, isStreaming, trigger } = useStreamAI();
-    const [hasTriggeredAI, setHasTriggeredAI] = useState(false);
+    const { output, metadata, isStreaming, trigger, debug } = useStreamAI();
+    const hasTriggeredRef = React.useRef(false);
+
+    // Reset trigger ref if status changes (e.g. retry)
+    useEffect(() => {
+        if (result.status !== 'success') {
+            hasTriggeredRef.current = false;
+        }
+    }, [result.status, result.id]);
 
     useEffect(() => {
-        if (isExpanded && !hasTriggeredAI && result.status === 'success' && result.response) {
-            setHasTriggeredAI(true);
+        if (isExpanded && !hasTriggeredRef.current && result.status === 'success' && result.response && !metadata && !isStreaming) {
+            hasTriggeredRef.current = true;
             // Construct mock state for AI context
             const mockState = {
                 project: result.project,
@@ -60,9 +69,21 @@ const BatchResultCard = ({
                 memory: '0 GB'
             } as any;
 
-            trigger(mockState, mockMachineDetails, result.response);
+            trigger(result.id, mockState, mockMachineDetails, result.response);
         }
-    }, [isExpanded, hasTriggeredAI, result, trigger]);
+    }, [isExpanded, result, trigger, metadata, isStreaming]);
+
+    // Sync debug data to parent
+    useEffect(() => {
+        if (debug && output && onUpdateBatchDebug) {
+            onUpdateBatchDebug(result.id, {
+                prompt: debug.prompt,
+                responseRaw: output,
+                model: debug.model,
+                timestamp: new Date().toISOString()
+            });
+        }
+    }, [debug, output, result.id, onUpdateBatchDebug]);
 
     const handleExport = (e: React.MouseEvent) => {
         e.stopPropagation();
@@ -179,7 +200,7 @@ const BatchResultCard = ({
                             </Suspense>
                         </div>
                         {/* AI Insights Section */}
-                        <div className="xl:col-span-2 h-[600px]">
+                        <div className="xl:col-span-2 h-[800px]">
                             <Suspense fallback={<GeminiSkeleton />}>
                                 <GeminiCard data={metadata} loading={isStreaming} />
                             </Suspense>
@@ -195,24 +216,24 @@ interface ResultsDashboardProps {
   state: AppState;
   onExport: (type: 'csv' | 'html' | 'pdf' | 'json') => void;
   onClear: () => void;
-  isStreaming: boolean;
   onToggleComparison: () => void;
   onSelectRun: (id: string) => void;
   onDeleteRun: (id: string) => void;
   onSetBaseline: (id: string | null) => void;
   addToast: (type: Toast['type'], title: string, message: string, duration?: number) => void;
+  onUpdateBatchDebug?: (scenarioId: string, debug: GeminiDebugEntry) => void;
 }
 
 const ResultsDashboard: React.FC<ResultsDashboardProps> = ({ 
   state, 
   onExport, 
   onClear, 
-  isStreaming,
   onToggleComparison,
   onSelectRun,
   onDeleteRun,
   onSetBaseline,
-  addToast
+  addToast,
+  onUpdateBatchDebug
 }) => {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   // Local selection state for batch comparison
@@ -263,10 +284,14 @@ const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
   // Empty State
   if (state.batchResults.length === 0 && !state.loading) {
       return (
-        <div className="flex flex-col items-center justify-center py-12 text-slate-400 border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-xl animate-enter">
-             <Icons.Layers size={48} className="mb-4 opacity-20" />
-             <p className="font-medium">No scenarios in batch.</p>
-             <p className="text-sm mt-1">Add configurations to the batch queue and run analysis.</p>
+        <div className="flex flex-col items-center justify-center py-16 text-slate-400 border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-xl animate-enter bg-slate-50/50 dark:bg-slate-900/50">
+             <div className="w-16 h-16 bg-white dark:bg-slate-800 rounded-2xl shadow-sm flex items-center justify-center mb-4 border border-slate-100 dark:border-slate-700">
+                <Icons.Layers size={24} className="text-slate-300 dark:text-slate-600" />
+             </div>
+             <p className="font-bold text-slate-600 dark:text-slate-300 text-sm uppercase tracking-wide">No Analysis Results</p>
+             <p className="text-xs mt-1.5 text-slate-400 max-w-xs text-center leading-relaxed">
+                Add configurations to the batch queue and run an analysis to generate insights.
+             </p>
         </div>
       );
   }
@@ -336,6 +361,7 @@ const ResultsDashboard: React.FC<ResultsDashboardProps> = ({
                    onSelect={() => handleBatchSelect(result.id)}
                    isExpanded={expandedId === result.id}
                    onToggleExpand={() => setExpandedId(expandedId === result.id ? null : result.id)}
+                   onUpdateBatchDebug={onUpdateBatchDebug}
                />
            ))}
        </div>

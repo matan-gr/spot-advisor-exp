@@ -1,157 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Spot Capacity Advisor - Project History</title>
-<style>
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
-    line-height: 1.6;
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 2rem;
-    color: #24292e;
-    background-color: #ffffff;
-  }
-  h1, h2, h3, h4, h5, h6 {
-    margin-top: 24px;
-    margin-bottom: 16px;
-    font-weight: 600;
-    line-height: 1.25;
-  }
-  h1 { font-size: 2em; border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
-  h2 { font-size: 1.5em; border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
-  h3 { font-size: 1.25em; }
-  p { margin-top: 0; margin-bottom: 16px; }
-  code {
-    padding: 0.2em 0.4em;
-    margin: 0;
-    font-size: 85%;
-    background-color: #f6f8fa;
-    border-radius: 6px;
-    font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
-  }
-  pre {
-    padding: 16px;
-    overflow: auto;
-    font-size: 85%;
-    line-height: 1.45;
-    background-color: #f6f8fa;
-    border-radius: 6px;
-  }
-  pre code {
-    background-color: transparent;
-    padding: 0;
-  }
-  table {
-    border-spacing: 0;
-    border-collapse: collapse;
-    margin-top: 0;
-    margin-bottom: 16px;
-    width: 100%;
-  }
-  table th, table td {
-    padding: 6px 13px;
-    border: 1px solid #dfe2e5;
-  }
-  table th {
-    font-weight: 600;
-    background-color: #f6f8fa;
-  }
-  table tr:nth-child(2n) {
-    background-color: #f6f8fa;
-  }
-  blockquote {
-    padding: 0 1em;
-    color: #6a737d;
-    border-left: 0.25em solid #dfe2e5;
-    margin: 0 0 16px 0;
-  }
-  ul, ol { padding-left: 2em; margin-bottom: 16px; }
-  hr {
-    height: 0.25em;
-    padding: 0;
-    margin: 24px 0;
-    background-color: #e1e4e8;
-    border: 0;
-  }
-  a { color: #0366d6; text-decoration: none; }
-  a:hover { text-decoration: underline; }
-  .mermaid {
-    background-color: #f0f0f0;
-    padding: 1rem;
-    border-radius: 6px;
-    text-align: center;
-    font-family: monospace;
-    white-space: pre-wrap;
-    border: 1px solid #e1e4e8;
-  }
-</style>
-<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    mermaid.initialize({ startOnLoad: false, theme: 'default' });
-    
-    const mermaidBlocks = document.querySelectorAll('pre code.language-mermaid');
-    mermaidBlocks.forEach(block => {
-      const pre = block.parentElement;
-      const content = block.textContent;
-      const div = document.createElement('div');
-      div.className = 'mermaid';
-      div.textContent = content;
-      pre.replaceWith(div);
-    });
-    
-    mermaid.run();
-  });
-</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project History & Documentation</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2, h3, h4 {
+            color: #111;
+            margin-top: 1.5em;
+        }
+        h1 { border-bottom: 2px solid #eaeaea; padding-bottom: 10px; }
+        h2 { border-bottom: 1px solid #eaeaea; padding-bottom: 5px; }
+        code {
+            background-color: #f6f8fa;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+            font-size: 85%;
+        }
+        pre {
+            background-color: #f6f8fa;
+            padding: 16px;
+            border-radius: 6px;
+            overflow: auto;
+        }
+        pre code {
+            background-color: transparent;
+            padding: 0;
+            font-size: 100%;
+        }
+        blockquote {
+            border-left: 4px solid #dfe2e5;
+            color: #6a737d;
+            padding-left: 16px;
+            margin: 0;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 16px 0;
+        }
+        th, td {
+            border: 1px solid #dfe2e5;
+            padding: 6px 13px;
+        }
+        th {
+            background-color: #f6f8fa;
+            font-weight: 600;
+        }
+        tr:nth-child(2n) {
+            background-color: #f8f8f8;
+        }
+        .mermaid {
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            white-space: pre;
+        }
+    </style>
 </head>
 <body>
-<h1>Project History &amp; Documentation</h1>
+
+<h1>Project History & Documentation</h1>
+
 <h2>1. Executive Summary</h2>
-<p><strong>Name:</strong> Spot Capacity Advisor
-<strong>Version:</strong> 2.18.1
-<strong>Description:</strong> Enterprise-grade Google Cloud Spot Capacity Advisor with Optimized Performance and AI Insights.
-<strong>Purpose:</strong> To assist Cloud Architects and FinOps practitioners in identifying the optimal Google Cloud regions and zones for Spot VM deployments, minimizing preemption risk and maximizing obtainability.
+<p><strong>Name:</strong> Spot Capacity Advisor<br>
+<strong>Version:</strong> 2.18.2<br>
+<strong>Description:</strong> Enterprise-grade Google Cloud Spot Capacity Advisor with Optimized Performance and AI Insights.<br>
+<strong>Purpose:</strong> To assist Cloud Architects and FinOps practitioners in identifying the optimal Google Cloud regions and zones for Spot VM deployments, minimizing preemption risk and maximizing obtainability.<br>
 <strong>Tech Stack:</strong> React 18, TypeScript, Vite, Tailwind CSS, Framer Motion, Recharts, Google GenAI SDK.</p>
+
 <hr>
+
 <h2>2. System Architecture</h2>
-<p>The application is designed as a <strong>stateless, client-side Single Page Application (SPA)</strong> that interacts directly with Google Cloud APIs. It acts as a &quot;pane of glass&quot; over the raw Compute Engine Capacity API.</p>
+<p>The application is designed as a <strong>stateless, client-side Single Page Application (SPA)</strong> that interacts directly with Google Cloud APIs. It acts as a "pane of glass" over the raw Compute Engine Capacity API.</p>
+
 <h3>2.1. Integration Pattern: Direct-to-API</h3>
 <p>Unlike traditional web apps that proxy requests through a backend, this tool calls Google Cloud APIs directly from the browser.</p>
 <ul>
-<li><strong>Authentication:</strong> Relies on short-lived OAuth 2.0 Access Tokens provided by the user (typically via <code>gcloud auth print-access-token</code>).</li>
-<li><strong>Authorization:</strong> The token must have <code>https://www.googleapis.com/auth/compute.readonly</code> scope.</li>
-<li><strong>Endpoints Used:</strong><ul>
-<li><strong>Capacity API (Alpha):</strong> <code>POST https://compute.googleapis.com/compute/alpha/projects/{project}/regions/{region}/advice/capacity</code></li>
-<li><strong>Region Discovery:</strong> <code>GET https://compute.googleapis.com/compute/v1/projects/{project}/regions</code></li>
-<li><strong>Machine Types:</strong> <code>GET https://compute.googleapis.com/compute/v1/projects/{project}/zones/{zone}/machineTypes</code></li>
-<li><strong>Token Info:</strong> <code>GET https://oauth2.googleapis.com/tokeninfo</code></li>
-<li><strong>Storage (GCS):</strong> <code>https://storage.googleapis.com/storage/v1/b/{bucket}/...</code></li>
+    <li><strong>Authentication:</strong> Relies on short-lived OAuth 2.0 Access Tokens provided by the user (typically via <code>gcloud auth print-access-token</code>).</li>
+    <li><strong>Authorization:</strong> The token must have <code>https://www.googleapis.com/auth/compute.readonly</code> scope.</li>
+    <li><strong>Endpoints Used:</strong>
+        <ul>
+            <li><strong>Capacity API (Alpha):</strong> <code>POST https://compute.googleapis.com/compute/alpha/projects/{project}/regions/{region}/advice/capacity</code></li>
+            <li><strong>Region Discovery:</strong> <code>GET https://compute.googleapis.com/compute/v1/projects/{project}/regions</code></li>
+            <li><strong>Machine Types:</strong> <code>GET https://compute.googleapis.com/compute/v1/projects/{project}/zones/{zone}/machineTypes</code></li>
+            <li><strong>Token Info:</strong> <code>GET https://oauth2.googleapis.com/tokeninfo</code></li>
+            <li><strong>Storage (GCS):</strong> <code>https://storage.googleapis.com/storage/v1/b/{bucket}/...</code></li>
+        </ul>
+    </li>
 </ul>
-</li>
-</ul>
+
 <h3>2.2. Data Flow Diagram</h3>
-<pre><code class="language-mermaid">graph TD
-    User[User] --&gt;|1. Config &amp; Token| UI[React UI]
-    UI --&gt;|2. Validation| Logic[useCapacityLogic]
-    Logic --&gt;|3. Rate Limit Check| Limiter[RateLimiter]
-    Limiter --&gt;|4. API Request| Service[ApiService]
+<div class="mermaid">
+graph TD
+    User[User] -->|1. Config & Token| UI[React UI]
+    UI -->|2. Validation| Logic[useCapacityLogic]
+    Logic -->|3. Rate Limit Check| Limiter[RateLimiter]
+    Limiter -->|4. API Request| Service[ApiService]
     
-    Service --&gt;|5a. Capacity Query| GCP[Google Cloud API]
-    Service --&gt;|5b. Mock Data| Sim[Simulation Engine]
+    Service -->|5a. Capacity Query| GCP[Google Cloud API]
+    Service -->|5b. Mock Data| Sim[Simulation Engine]
     
-    GCP --&gt;|6. JSON Response| Service
-    Service --&gt;|7. Normalized Data| Logic
+    GCP -->|6. JSON Response| Service
+    Service -->|7. Normalized Data| Logic
     
-    Logic --&gt;|8. Update State| Store[AppState]
-    Store --&gt;|9. Render| Dashboard[ResultsDashboard]
+    Logic -->|8. Update State| Store[AppState]
+    Store -->|9. Render| Dashboard[ResultsDashboard]
     
-    Logic --&gt;|10. Trigger Insight| AI[GeminiService]
-    AI --&gt;|11. Stream Text| GeminiCard[AI Component]
-</code></pre>
-<h3>2.3. Directory Structure &amp; File Descriptions</h3>
+    Logic -->|10. Trigger Insight| AI[GeminiService]
+    AI -->|11. Stream Text| GeminiCard[AI Component]
+</div>
+
+<h3>2.3. Directory Structure & File Descriptions</h3>
 <pre><code>/src
 ├── App.tsx                  # Main Application Shell. Orchestrates layout, global providers (Toast, CommandPalette), and routing logic.
 ├── config.ts                # Static configuration data (Regions, Machine Types, Families) and constants.
@@ -159,7 +129,7 @@
 ├── export.ts                # Utilities for exporting results to CSV, PDF, HTML, and JSON.
 ├── index.tsx                # Application Entry Point. Mounts React to DOM.
 ├── styles.css               # Global Styles, Tailwind directives, and custom utility classes.
-├── types.ts                 # TypeScript Interfaces and Types. The &quot;Contract&quot; of the application.
+├── types.ts                 # TypeScript Interfaces and Types. The "Contract" of the application.
 ├── utils.ts                 # Helper functions for data formatting, UUID generation, and math.
 ├── vite-env.d.ts            # Vite environment type definitions.
 │
@@ -188,632 +158,753 @@
 │   ├── useCapacityLogic.ts  # THE BRAIN. Manages global app state, API calls, and business logic.
 │   └── useStreamAI.ts       # Manages streaming responses from Gemini API.
 │
-└── services/                # Business Logic &amp; API Layers
+└── services/                # Business Logic & API Layers
     ├── apiService.ts        # Google Cloud Compute Engine API client (Alpha).
     ├── geminiService.ts     # Google Gemini AI client (Generative Insights).
     ├── rateLimiter.ts       # Client-side Token Bucket Rate Limiter.
-    ├── simulationEngine.ts  # Mock Data Generator for &quot;Simulation Mode&quot;.
-    └── storageService.ts    # Google Cloud Storage client for history persistence.
-</code></pre>
+    ├── simulationEngine.ts  # Mock Data Generator for "Simulation Mode".
+    └── storageService.ts    # Google Cloud Storage client for history persistence.</code></pre>
+
 <hr>
-<h2>3. Core Mechanisms &amp; Algorithms</h2>
-<h3>3.1. Batch Processing (Concurrency &amp; Queueing)</h3>
+
+<h2>3. Core Mechanisms & Algorithms</h2>
+
+<h3>3.1. Batch Processing (Concurrency & Queueing)</h3>
 <p>The application supports queuing multiple configuration scenarios to run in parallel.</p>
 <ul>
-<li><strong>Queue System:</strong> Users can add up to 3 scenarios to a batch queue (<code>state.scenarios</code>).</li>
-<li><strong>Concurrency Algorithm:</strong> The <code>runBatchAnalysis</code> function uses a <strong>Worker Pattern</strong> to execute requests with a concurrency limit of <strong>5</strong>.<ul>
-<li><em>Why?</em> Browsers typically limit concurrent connections per domain (HTTP/1.1) or have global limits. Limiting to 5 prevents &quot;Head-of-Line Blocking&quot; and network stalls.</li>
+    <li><strong>Queue System:</strong> Users can add up to 3 scenarios to a batch queue (<code>state.scenarios</code>).</li>
+    <li><strong>Concurrency Algorithm:</strong> The <code>runBatchAnalysis</code> function uses a <strong>Worker Pattern</strong> to execute requests with a concurrency limit of <strong>5</strong>.
+        <ul>
+            <li><em>Why?</em> Browsers typically limit concurrent connections per domain (HTTP/1.1) or have global limits. Limiting to 5 prevents "Head-of-Line Blocking" and network stalls.</li>
+        </ul>
+    </li>
+    <li><strong>Parallel Execution:</strong> Uses <code>Promise.all</code> with the worker pattern to process the queue efficiently.</li>
+    <li><strong>Status Tracking:</strong> Each scenario tracks its own status (<code>pending</code>, <code>loading</code>, <code>success</code>, <code>error</code>) allowing for partial batch failures.</li>
 </ul>
-</li>
-<li><strong>Parallel Execution:</strong> Uses <code>Promise.all</code> with the worker pattern to process the queue efficiently.</li>
-<li><strong>Status Tracking:</strong> Each scenario tracks its own status (<code>pending</code>, <code>loading</code>, <code>success</code>, <code>error</code>) allowing for partial batch failures.</li>
-</ul>
+
 <h3>3.2. Rate Limiting (Token Bucket Algorithm)</h3>
 <p>To prevent API abuse and handle quotas gracefully, a client-side rate limiter is implemented in <code>rateLimiter.ts</code>.</p>
 <ul>
-<li><strong>Algorithm:</strong> <strong>Token Bucket</strong>.</li>
-<li><strong>Configuration:</strong><ul>
-<li><strong>Capacity:</strong> 120 tokens (requests).</li>
-<li><strong>Refill Rate:</strong> 2 tokens/second (120 per minute).</li>
+    <li><strong>Algorithm:</strong> <strong>Token Bucket</strong>.</li>
+    <li><strong>Configuration:</strong>
+        <ul>
+            <li><strong>Capacity:</strong> 120 tokens (requests).</li>
+            <li><strong>Refill Rate:</strong> 2 tokens/second (120 per minute).</li>
+        </ul>
+    </li>
+    <li><strong>Behavior:</strong>
+        <ul>
+            <li><code>tryRequest()</code>: Consumes a token if available.</li>
+            <li><code>waitForToken()</code>: Asynchronously pauses execution if bucket is empty, resolving when tokens refill. This "smooths" bursty traffic from batch operations.</li>
+        </ul>
+    </li>
 </ul>
-</li>
-<li><strong>Behavior:</strong><ul>
-<li><code>tryRequest()</code>: Consumes a token if available.</li>
-<li><code>waitForToken()</code>: Asynchronously pauses execution if bucket is empty, resolving when tokens refill. This &quot;smooths&quot; bursty traffic from batch operations.</li>
-</ul>
-</li>
-</ul>
-<h3>3.3. AI Integration (Streaming &amp; Context)</h3>
+
+<h3>3.3. AI Integration (Streaming & Context)</h3>
 <p>The app integrates with Google Gemini for predictive insights.</p>
 <ul>
-<li><strong>Service:</strong> <code>geminiService.ts</code> handles all AI interactions.</li>
-<li><strong>Streaming:</strong> <code>useStreamAI</code> hook manages the <code>AsyncGenerator</code> response from Gemini to provide real-time feedback (Typewriter effect).</li>
-<li><strong>Prompt Engineering:</strong><ul>
-<li><strong>Grounding:</strong> Prompts include <strong>Real-Time API Data</strong> (obtainability scores, uptime) serialized as Markdown tables.</li>
-<li><strong>Verification:</strong> The System Instruction mandates the model to use the <code>googleSearch</code> tool to verify Service Health and Regional Events before answering.</li>
-<li><strong>Comparison:</strong> A specialized prompt compares multiple scenarios side-by-side, analyzing trade-offs and declaring a &quot;winner&quot;.</li>
+    <li><strong>Service:</strong> <code>geminiService.ts</code> handles all AI interactions.</li>
+    <li><strong>Streaming:</strong> <code>useStreamAI</code> hook manages the <code>AsyncGenerator</code> response from Gemini to provide real-time feedback (Typewriter effect).</li>
+    <li><strong>Prompt Engineering:</strong>
+        <ul>
+            <li><strong>Grounding:</strong> Prompts include <strong>Real-Time API Data</strong> (obtainability scores, uptime) serialized as Markdown tables.</li>
+            <li><strong>Verification:</strong> The System Instruction mandates the model to use the <code>googleSearch</code> tool to verify Service Health and Regional Events before answering.</li>
+            <li><strong>Comparison:</strong> A specialized prompt compares multiple scenarios side-by-side, analyzing trade-offs and declaring a "winner".</li>
+        </ul>
+    </li>
 </ul>
-</li>
-</ul>
+
 <h3>3.4. Simulation Engine (Mock Mode vs. Real Mode)</h3>
 <p>The application features a sophisticated dual-mode execution engine.</p>
+
 <h4>A. Real Mode (Live API)</h4>
 <ul>
-<li><strong>Trigger:</strong> <code>state.mockMode = false</code> (Default).</li>
-<li><strong>Logic:</strong> Requests are routed via <code>apiService</code> to the actual Google Cloud Compute Engine API.</li>
-<li><strong>Latency:</strong> Dependent on network and API response times (typically 200ms - 1.5s).</li>
-<li><strong>Data:</strong> Returns authoritative, real-time capacity data from Google&#39;s internal supply chain systems.</li>
+    <li><strong>Trigger:</strong> <code>state.mockMode = false</code> (Default).</li>
+    <li><strong>Logic:</strong> Requests are routed via <code>apiService</code> to the actual Google Cloud Compute Engine API.</li>
+    <li><strong>Latency:</strong> Dependent on network and API response times (typically 200ms - 1.5s).</li>
+    <li><strong>Data:</strong> Returns authoritative, real-time capacity data from Google's internal supply chain systems.</li>
 </ul>
+
 <h4>B. Mock Mode (Simulation Engine)</h4>
 <ul>
-<li><strong>Trigger:</strong> <code>state.mockMode = true</code>.</li>
-<li><strong>Purpose:</strong> Allows users to explore the UI, test batch workflows, and visualize reports without needing a valid Google Cloud Access Token or incurring quota usage.</li>
-<li><strong>Engine Logic (<code>simulationEngine.ts</code>):</strong><ul>
-<li><strong>Deterministic Hashing:</strong> Uses a custom <code>pseudoRandom</code> function seeded with <code>${region}-${zone}-${machineType}</code>. This ensures that running the same &quot;simulation&quot; twice yields the same result, mimicking stable infrastructure.</li>
-<li><strong>Scarcity Tiers:</strong> Machine types are classified into tiers (1=Abundant/E2 to 5=AllocationOnly/H100).</li>
-<li><strong>Pool Depth Estimation:</strong> Estimates the theoretical spot pool size based on the tier (e.g., Tier 1 has ~5000 slots, Tier 5 has ~50).</li>
-<li><strong>Saturation Calculation:</strong> <code>saturation = requestSize / poolDepth</code>. High saturation drastically reduces the calculated <code>obtainability</code> score.</li>
-<li><strong>Regional Bias:</strong> Applies modifiers based on real-world region characteristics (e.g., <code>us-east1</code> is modeled as &quot;congested&quot; with a negative modifier, while <code>us-west4</code> is &quot;optimistic&quot;).</li>
-<li><strong>Noise Injection:</strong> Adds deterministic noise (+/- 7%) to simulate market fluctuations.</li>
+    <li><strong>Trigger:</strong> <code>state.mockMode = true</code>.</li>
+    <li><strong>Purpose:</strong> Allows users to explore the UI, test batch workflows, and visualize reports without needing a valid Google Cloud Access Token or incurring quota usage.</li>
+    <li><strong>Engine Logic (<code>simulationEngine.ts</code>):</strong>
+        <ul>
+            <li><strong>Deterministic Hashing:</strong> Uses a custom <code>pseudoRandom</code> function seeded with <code>${region}-${zone}-${machineType}</code>. This ensures that running the same "simulation" twice yields the same result, mimicking stable infrastructure.</li>
+            <li><strong>Scarcity Tiers:</strong> Machine types are classified into tiers (1=Abundant/E2 to 5=AllocationOnly/H100).</li>
+            <li><strong>Pool Depth Estimation:</strong> Estimates the theoretical spot pool size based on the tier (e.g., Tier 1 has ~5000 slots, Tier 5 has ~50).</li>
+            <li><strong>Saturation Calculation:</strong> <code>saturation = requestSize / poolDepth</code>. High saturation drastically reduces the calculated <code>obtainability</code> score.</li>
+            <li><strong>Regional Bias:</strong> Applies modifiers based on real-world region characteristics (e.g., <code>us-east1</code> is modeled as "congested" with a negative modifier, while <code>us-west4</code> is "optimistic").</li>
+            <li><strong>Noise Injection:</strong> Adds deterministic noise (+/- 7%) to simulate market fluctuations.</li>
+        </ul>
+    </li>
 </ul>
-</li>
-</ul>
+
 <hr>
+
 <h2>4. Operational Flows (Detailed)</h2>
+
 <h3>4.1. Capacity Analysis Flow (Happy Path)</h3>
 <ol>
-<li><strong>Configuration:</strong> User enters Project ID, selects Region, Machine Type, and Count.</li>
-<li><strong>Validation:</strong> Input is validated against regex (Project ID) and dynamic API data (Region/Zone availability).</li>
-<li><strong>Request Construction:</strong> <code>buildCapacityAdvisorRequest</code> creates the JSON payload for the Compute Engine API.</li>
-<li><strong>Rate Limiting:</strong> <code>apiRateLimiter</code> ensures requests do not exceed 120 requests/minute.</li>
-<li><strong>API Execution:</strong> <code>gcpRequest</code> sends the request to the Google Cloud API.</li>
-<li><strong>Response Handling:</strong><ul>
-<li><strong>Success:</strong> Data is parsed, sorted by obtainability score, and stored in <code>AppState</code>.</li>
-<li><strong>Error:</strong> Errors are caught, classified (Quota, Auth, Generic), and displayed.</li>
-</ul>
-</li>
-<li><strong>AI Insight:</strong> <code>geminiService</code> is triggered automatically to provide context.</li>
+    <li><strong>Configuration:</strong> User enters Project ID, selects Region, Machine Type, and Count.</li>
+    <li><strong>Validation:</strong> Input is validated against regex (Project ID) and dynamic API data (Region/Zone availability).</li>
+    <li><strong>Request Construction:</strong> <code>buildCapacityAdvisorRequest</code> creates the JSON payload for the Compute Engine API.</li>
+    <li><strong>Rate Limiting:</strong> <code>apiRateLimiter</code> ensures requests do not exceed 120 requests/minute.</li>
+    <li><strong>API Execution:</strong> <code>gcpRequest</code> sends the request to the Google Cloud API.</li>
+    <li><strong>Response Handling:</strong>
+        <ul>
+            <li><strong>Success:</strong> Data is parsed, sorted by obtainability score, and stored in <code>AppState</code>.</li>
+            <li><strong>Error:</strong> Errors are caught, classified (Quota, Auth, Generic), and displayed.</li>
+        </ul>
+    </li>
+    <li><strong>AI Insight:</strong> <code>geminiService</code> is triggered automatically to provide context.</li>
 </ol>
+
 <h3>4.2. Batch Analysis Flow</h3>
 <ol>
-<li><strong>Queueing:</strong> User configures a scenario -&gt; Clicks &quot;Add to Queue&quot;.</li>
-<li><strong>Repeat:</strong> User adds up to 3 scenarios.</li>
-<li><strong>Batch Run:</strong> User clicks &quot;Run Batch&quot;.</li>
-<li><strong>Parallel Execution:</strong> System runs scenarios concurrently (Limit: 5).</li>
-<li><strong>Partial Failure Handling:</strong> If one scenario fails, others continue. UI shows mixed status.</li>
-<li><strong>Retry:</strong> User can click &quot;Retry&quot; on individual failed items to re-run just that specific configuration.</li>
+    <li><strong>Queueing:</strong> User configures a scenario -> Clicks "Add to Queue".</li>
+    <li><strong>Repeat:</strong> User adds up to 3 scenarios.</li>
+    <li><strong>Batch Run:</strong> User clicks "Run Batch".</li>
+    <li><strong>Parallel Execution:</strong> System runs scenarios concurrently (Limit: 5).</li>
+    <li><strong>Partial Failure Handling:</strong> If one scenario fails, others continue. UI shows mixed status.</li>
+    <li><strong>Retry:</strong> User can click "Retry" on individual failed items to re-run just that specific configuration.</li>
 </ol>
+
 <h3>4.3. Error Handling Flow</h3>
 <ol>
-<li><strong>Detection:</strong> Error occurs (Network, Auth, Validation).</li>
-<li><strong>Classification:</strong><ul>
-<li><strong>Auth Error:</strong> &quot;Missing Scope&quot; -&gt; Prompt user to run <code>gcloud auth</code>.</li>
-<li><strong>Quota Error:</strong> &quot;429/Resource Exhausted&quot; -&gt; Rate limiter pauses or UI shows &quot;Quota Exceeded&quot;.</li>
-<li><strong>Logic Error:</strong> Caught by <code>try/catch</code> blocks.</li>
-</ul>
-</li>
-<li><strong>Notification:</strong><ul>
-<li><strong>Toast:</strong> Transient popup for non-blocking errors.</li>
-<li><strong>Inline:</strong> Error message in the specific card (e.g., &quot;Region Unavailable&quot;).</li>
-<li><strong>Debug Console:</strong> Full stack trace logged to <code>DebugData</code>.</li>
-</ul>
-</li>
+    <li><strong>Detection:</strong> Error occurs (Network, Auth, Validation).</li>
+    <li><strong>Classification:</strong>
+        <ul>
+            <li><strong>Auth Error:</strong> "Missing Scope" -> Prompt user to run <code>gcloud auth</code>.</li>
+            <li><strong>Quota Error:</strong> "429/Resource Exhausted" -> Rate limiter pauses or UI shows "Quota Exceeded".</li>
+            <li><strong>Logic Error:</strong> Caught by <code>try/catch</code> blocks.</li>
+        </ul>
+    </li>
+    <li><strong>Notification:</strong>
+        <ul>
+            <li><strong>Toast:</strong> Transient popup for non-blocking errors.</li>
+            <li><strong>Inline:</strong> Error message in the specific card (e.g., "Region Unavailable").</li>
+            <li><strong>Debug Console:</strong> Full stack trace logged to <code>DebugData</code>.</li>
+        </ul>
+    </li>
 </ol>
+
 <h3>4.4. Abnormal Conditions Handling</h3>
 <ul>
-<li><strong>Authentication Failures (401/403):</strong> Detected by <code>apiService</code>. UI displays &quot;Authentication Failed&quot;. User action: Refresh token.</li>
-<li><strong>Capacity Stockouts (Empty Response):</strong> API returns 200 but empty list. <code>apiService</code> throws custom 404. UI shows &quot;Stockout&quot; illustration.</li>
-<li><strong>Configuration Drift:</strong> User changes settings <em>after</em> a run. <code>ConfigurationPanel</code> detects mismatch vs <code>lastRunConfigRef</code>. Run button blinks.</li>
+    <li><strong>Authentication Failures (401/403):</strong> Detected by <code>apiService</code>. UI displays "Authentication Failed". User action: Refresh token.</li>
+    <li><strong>Capacity Stockouts (Empty Response):</strong> API returns 200 but empty list. <code>apiService</code> throws custom 404. UI shows "Stockout" illustration.</li>
+    <li><strong>Configuration Drift:</strong> User changes settings <em>after</em> a run. <code>ConfigurationPanel</code> detects mismatch vs <code>lastRunConfigRef</code>. Run button blinks.</li>
 </ul>
-<h3>4.5. Data Handling &amp; Lifecycle</h3>
+
+<h3>4.5. Data Handling & Lifecycle</h3>
 <p>The application manages data through a strict lifecycle to ensure consistency and privacy.</p>
 <ol>
-<li><strong>Input (User Action):</strong><ul>
-<li>Data enters via <code>ConfigurationPanel</code> (Project, Region, etc.).</li>
-<li>Sanitized immediately via React state binding.</li>
-</ul>
-</li>
-<li><strong>Processing (In-Memory):</strong><ul>
-<li>Data is normalized into <code>CapacityAdvisorRequest</code> format.</li>
-<li>Stored in <code>AppState</code> (RAM only).</li>
-</ul>
-</li>
-<li><strong>Transmission (Secure):</strong><ul>
-<li>Sent to Google Cloud APIs via HTTPS (TLS 1.3).</li>
-<li>Access Token is attached as <code>Authorization: Bearer</code> header.</li>
-</ul>
-</li>
-<li><strong>Storage (Ephemeral vs. Persistent):</strong><ul>
-<li><strong>Access Tokens:</strong> Ephemeral. Lost on page refresh (unless re-entered).</li>
-<li><strong>Results:</strong> Ephemeral. Lost on page refresh.</li>
-<li><strong>History (Optional):</strong> If &quot;Sync History&quot; is enabled, results are encrypted and stored in the user&#39;s private GCS bucket.</li>
-<li><strong>Preferences:</strong> Persistent. Theme and last-used region stored in <code>localStorage</code>.</li>
-</ul>
-</li>
-<li><strong>Disposal:</strong><ul>
-<li>Closing the tab clears all sensitive data from memory.</li>
-<li><code>resetApplication</code> function explicitly wipes <code>localStorage</code> and resets state.</li>
-</ul>
-</li>
+    <li><strong>Input (User Action):</strong>
+        <ul>
+            <li>Data enters via <code>ConfigurationPanel</code> (Project, Region, etc.).</li>
+            <li>Sanitized immediately via React state binding.</li>
+        </ul>
+    </li>
+    <li><strong>Processing (In-Memory):</strong>
+        <ul>
+            <li>Data is normalized into <code>CapacityAdvisorRequest</code> format.</li>
+            <li>Stored in <code>AppState</code> (RAM only).</li>
+        </ul>
+    </li>
+    <li><strong>Transmission (Secure):</strong>
+        <ul>
+            <li>Sent to Google Cloud APIs via HTTPS (TLS 1.3).</li>
+            <li>Access Token is attached as <code>Authorization: Bearer</code> header.</li>
+        </ul>
+    </li>
+    <li><strong>Storage (Ephemeral vs. Persistent):</strong>
+        <ul>
+            <li><strong>Access Tokens:</strong> Ephemeral. Lost on page refresh (unless re-entered).</li>
+            <li><strong>Results:</strong> Ephemeral. Lost on page refresh.</li>
+            <li><strong>History (Optional):</strong> If "Sync History" is enabled, results are encrypted and stored in the user's private GCS bucket.</li>
+            <li><strong>Preferences:</strong> Persistent. Theme and last-used region stored in <code>localStorage</code>.</li>
+        </ul>
+    </li>
+    <li><strong>Disposal:</strong>
+        <ul>
+            <li>Closing the tab clears all sensitive data from memory.</li>
+            <li><code>resetApplication</code> function explicitly wipes <code>localStorage</code> and resets state.</li>
+        </ul>
+    </li>
 </ol>
+
 <hr>
+
 <h2>5. State Management</h2>
 <p>The application uses a monolithic state object (<code>AppState</code>) managed by <code>useCapacityLogic</code>. This ensures a single source of truth.</p>
+
 <h3>5.1. Key State Slices</h3>
 <ul>
-<li><strong><code>batchResults</code></strong>: Array of <code>ScenarioResult</code>.<ul>
-<li><code>status</code>: &#39;pending&#39; | &#39;loading&#39; | &#39;success&#39; | &#39;error&#39;</li>
-<li><code>response</code>: The API payload.</li>
-<li><code>errorDetails</code>: String message if failed.</li>
+    <li><strong><code>batchResults</code>:</strong> Array of <code>ScenarioResult</code>.
+        <ul>
+            <li><code>status</code>: 'pending' | 'loading' | 'success' | 'error'</li>
+            <li><code>response</code>: The API payload.</li>
+            <li><code>errorDetails</code>: String message if failed.</li>
+        </ul>
+    </li>
+    <li><strong><code>debugData</code>:</strong> Stores logs, network requests (redacted), and AI prompts.</li>
+    <li><strong><code>history</code>:</strong> Persistent log of past runs.</li>
+    <li><strong><code>validationErrors</code>:</strong> Map of field names to error states.</li>
+    <li><strong><code>toasts</code>:</strong> Queue of active notifications.</li>
 </ul>
-</li>
-<li><strong><code>debugData</code></strong>: Stores logs, network requests (redacted), and AI prompts.</li>
-<li><strong><code>history</code></strong>: Persistent log of past runs.</li>
-<li><strong><code>validationErrors</code></strong>: Map of field names to error states.</li>
-<li><strong><code>toasts</code></strong>: Queue of active notifications.</li>
-</ul>
+
 <h3>5.2. State Transitions</h3>
 <ul>
-<li><strong>Idle -&gt; Loading:</strong> Triggered by <code>runBatchAnalysis</code>. Clears previous errors.</li>
-<li><strong>Loading -&gt; Success:</strong> Updates <code>batchResults</code>, triggers <code>useStreamAI</code>.</li>
-<li><strong>Loading -&gt; Error:</strong> Updates <code>batchResults</code> with error, logs to Debug Console.</li>
-<li><strong>Streaming -&gt; Idle:</strong> AI stream completes or is aborted.</li>
+    <li><strong>Idle -> Loading:</strong> Triggered by <code>runBatchAnalysis</code>. Clears previous errors.</li>
+    <li><strong>Loading -> Success:</strong> Updates <code>batchResults</code>, triggers <code>useStreamAI</code>.</li>
+    <li><strong>Loading -> Error:</strong> Updates <code>batchResults</code> with error, logs to Debug Console.</li>
+    <li><strong>Streaming -> Idle:</strong> AI stream completes or is aborted.</li>
 </ul>
+
 <hr>
-<h2>6. Security Considerations &amp; Mitigations</h2>
+
+<h2>6. Security Considerations & Mitigations</h2>
+
 <h3>6.1. Threat Model: Token Leakage</h3>
 <ul>
-<li><strong>Risk:</strong> Access tokens are powerful credentials. Storing them insecurely (e.g., <code>localStorage</code>) exposes them to XSS attacks.</li>
-<li><strong>Mitigation:</strong><ul>
-<li><strong>Memory-Only Storage:</strong> Tokens are stored <em>only</em> in React State (<code>AppState</code>).</li>
-<li><strong>No Persistence:</strong> The <code>useEffect</code> that saves state to <code>localStorage</code> explicitly excludes <code>accessToken</code>.</li>
-<li><strong>Redaction:</strong> The <code>DebugConsole</code> and <code>NetworkLog</code> automatically regex-replace <code>Bearer [token]</code> with <code>Bearer [HIDDEN]</code> before rendering or storing logs.</li>
+    <li><strong>Risk:</strong> Access tokens are powerful credentials. Storing them insecurely (e.g., <code>localStorage</code>) exposes them to XSS attacks.</li>
+    <li><strong>Mitigation:</strong>
+        <ul>
+            <li><strong>Memory-Only Storage:</strong> Tokens are stored <em>only</em> in React State (<code>AppState</code>).</li>
+            <li><strong>No Persistence:</strong> The <code>useEffect</code> that saves state to <code>localStorage</code> explicitly excludes <code>accessToken</code>.</li>
+            <li><strong>Redaction:</strong> The <code>DebugConsole</code> and <code>NetworkLog</code> automatically regex-replace <code>Bearer [token]</code> with <code>Bearer [HIDDEN]</code> before rendering or storing logs.</li>
+        </ul>
+    </li>
 </ul>
-</li>
-</ul>
+
 <h3>6.2. Threat Model: Injection Attacks</h3>
 <ul>
-<li><strong>Risk:</strong> Malicious Project IDs or inputs could be used to inject shell commands into the &quot;Simulated cURL&quot; display.</li>
-<li><strong>Mitigation:</strong><ul>
-<li><strong>Strict Validation:</strong> Project IDs are validated against <code>/^[a-z][a-z0-9-]{4,28}[a-z0-9]$/</code>.</li>
-<li><strong>React Escaping:</strong> All user inputs rendered in the DOM are automatically escaped by React.</li>
+    <li><strong>Risk:</strong> Malicious Project IDs or inputs could be used to inject shell commands into the "Simulated cURL" display.</li>
+    <li><strong>Mitigation:</strong>
+        <ul>
+            <li><strong>Strict Validation:</strong> Project IDs are validated against <code>/^[a-z][a-z0-9-]{4,28}[a-z0-9]$/</code>.</li>
+            <li><strong>React Escaping:</strong> All user inputs rendered in the DOM are automatically escaped by React.</li>
+        </ul>
+    </li>
 </ul>
-</li>
-</ul>
+
 <h3>6.3. Threat Model: API Abuse</h3>
 <ul>
-<li><strong>Risk:</strong> The tool could be used to DoS the Google Cloud API.</li>
-<li><strong>Mitigation:</strong><ul>
-<li><strong>Rate Limiting:</strong> Client-side Token Bucket ensures the app behaves like a &quot;good citizen&quot; (Max 120 req/min).</li>
+    <li><strong>Risk:</strong> The tool could be used to DoS the Google Cloud API.</li>
+    <li><strong>Mitigation:</strong>
+        <ul>
+            <li><strong>Rate Limiting:</strong> Client-side Token Bucket ensures the app behaves like a "good citizen" (Max 120 req/min).</li>
+        </ul>
+    </li>
 </ul>
-</li>
-</ul>
-<h3>6.4. Deployment Security &amp; Infrastructure (Nginx)</h3>
+
+<h3>6.4. Deployment Security & Infrastructure (Nginx)</h3>
 <p>Although the application is a client-side SPA, it is typically served via a containerized Nginx instance in production environments (e.g., Cloud Run).</p>
 <ul>
-<li><strong>Nginx Configuration:</strong><ul>
-<li><strong>Security Headers:</strong> The Nginx server block is configured to send strict security headers:<ul>
-<li><code>X-Frame-Options: DENY</code> (Prevents Clickjacking).</li>
-<li><code>X-Content-Type-Options: nosniff</code> (Prevents MIME sniffing).</li>
-<li><code>Referrer-Policy: strict-origin-when-cross-origin</code>.</li>
+    <li><strong>Nginx Configuration:</strong>
+        <ul>
+            <li><strong>Security Headers:</strong> The Nginx server block is configured to send strict security headers:
+                <ul>
+                    <li><code>X-Frame-Options: DENY</code> (Prevents Clickjacking).</li>
+                    <li><code>X-Content-Type-Options: nosniff</code> (Prevents MIME sniffing).</li>
+                    <li><code>Referrer-Policy: strict-origin-when-cross-origin</code>.</li>
+                </ul>
+            </li>
+            <li><strong>SPA Routing:</strong> Configured with <code>try_files $uri $uri/ /index.html;</code> to support client-side routing without 404s.</li>
+            <li><strong>Gzip Compression:</strong> Enabled for text assets (JS, CSS, HTML) to reduce bandwidth and improve load times.</li>
+        </ul>
+    </li>
+    <li><strong>Container Security:</strong>
+        <ul>
+            <li><strong>Non-Root User:</strong> The Docker container runs as a non-root user (e.g., <code>nginx</code> user) to minimize privilege escalation risks.</li>
+            <li><strong>Minimal Base Image:</strong> Uses <code>nginx:alpine</code> for a reduced attack surface.</li>
+        </ul>
+    </li>
 </ul>
-</li>
-<li><strong>SPA Routing:</strong> Configured with <code>try_files $uri $uri/ /index.html;</code> to support client-side routing without 404s.</li>
-<li><strong>Gzip Compression:</strong> Enabled for text assets (JS, CSS, HTML) to reduce bandwidth and improve load times.</li>
-</ul>
-</li>
-<li><strong>Container Security:</strong><ul>
-<li><strong>Non-Root User:</strong> The Docker container runs as a non-root user (e.g., <code>nginx</code> user) to minimize privilege escalation risks.</li>
-<li><strong>Minimal Base Image:</strong> Uses <code>nginx:alpine</code> for a reduced attack surface.</li>
-</ul>
-</li>
-</ul>
+
 <h3>6.5. Container Specification</h3>
 <p>The application is packaged as a Docker container optimized for security and performance.</p>
 <ul>
-<li><strong>Base Images:</strong><ul>
-<li><strong>Build Stage:</strong> <code>node:22-alpine</code> (Latest LTS, minimal footprint).</li>
-<li><strong>Runtime Stage:</strong> <code>nginx:alpine</code> (Lightweight web server).</li>
+    <li><strong>Base Images:</strong>
+        <ul>
+            <li><strong>Build Stage:</strong> <code>node:22-alpine</code> (Latest LTS, minimal footprint).</li>
+            <li><strong>Runtime Stage:</strong> <code>nginx:alpine</code> (Lightweight web server).</li>
+        </ul>
+    </li>
+    <li><strong>Port:</strong> Exposes port <code>3000</code> (mapped to Nginx internal port).</li>
+    <li><strong>Security Hardening:</strong>
+        <ul>
+            <li><strong>Non-Root User:</strong> Runs as the <code>nginx</code> user, not <code>root</code>.</li>
+            <li><strong>Permission Fixes:</strong> Explicit <code>chown</code> and <code>chmod</code> on <code>/usr/share/nginx/html</code>, <code>/var/cache/nginx</code>, and <code>/var/log/nginx</code> to allow non-root operation.</li>
+            <li><strong>Clean Build:</strong> Default Nginx static assets are removed before copying the build artifacts.</li>
+        </ul>
+    </li>
+    <li><strong>Build Arguments:</strong>
+        <ul>
+            <li><code>API_KEY</code>: Injected at build time to populate <code>VITE_API_KEY</code> for the Gemini SDK.</li>
+        </ul>
+    </li>
 </ul>
-</li>
-<li><strong>Port:</strong> Exposes port <code>3000</code> (mapped to Nginx internal port).</li>
-<li><strong>Security Hardening:</strong><ul>
-<li><strong>Non-Root User:</strong> Runs as the <code>nginx</code> user, not <code>root</code>.</li>
-<li><strong>Permission Fixes:</strong> Explicit <code>chown</code> and <code>chmod</code> on <code>/usr/share/nginx/html</code>, <code>/var/cache/nginx</code>, and <code>/var/log/nginx</code> to allow non-root operation.</li>
-<li><strong>Clean Build:</strong> Default Nginx static assets are removed before copying the build artifacts.</li>
-</ul>
-</li>
-<li><strong>Build Arguments:</strong><ul>
-<li><code>API_KEY</code>: Injected at build time to populate <code>VITE_API_KEY</code> for the Gemini SDK.</li>
-</ul>
-</li>
-</ul>
+
 <hr>
+
 <h2>7. Performance Optimizations</h2>
+
 <h3>7.1. Render Performance</h3>
 <ul>
-<li><strong>Memoization:</strong> <code>React.memo</code> is applied to <code>ConfigurationPanel</code> and <code>ResultsDashboard</code>. These components only re-render when their specific props (like <code>result</code> or <code>loading</code>) change, not on every keystroke in the parent.</li>
-<li><strong>Debouncing:</strong> Text inputs (<code>DebouncedInput</code>) wait 300ms before updating the global state. This prevents the heavy <code>ConfigurationPanel</code> from re-rendering on every character typed.</li>
+    <li><strong>Memoization:</strong> <code>React.memo</code> is applied to <code>ConfigurationPanel</code> and <code>ResultsDashboard</code>. These components only re-render when their specific props (like <code>result</code> or <code>loading</code>) change, not on every keystroke in the parent.</li>
+    <li><strong>Debouncing:</strong> Text inputs (<code>DebouncedInput</code>) wait 300ms before updating the global state. This prevents the heavy <code>ConfigurationPanel</code> from re-rendering on every character typed.</li>
 </ul>
-<h3>7.2. Bundle Size &amp; Load Time</h3>
+
+<h3>7.2. Bundle Size & Load Time</h3>
 <ul>
-<li><strong>Code Splitting:</strong><ul>
-<li><code>DebugConsole</code>, <code>GuideModal</code>, and heavy Chart components (<code>Recharts</code>) are lazy-loaded using <code>React.lazy</code> and <code>Suspense</code>.</li>
-<li><strong>Impact:</strong> The initial JavaScript bundle is significantly smaller, improving First Contentful Paint (FCP).</li>
+    <li><strong>Code Splitting:</strong>
+        <ul>
+            <li><code>DebugConsole</code>, <code>GuideModal</code>, and heavy Chart components (<code>Recharts</code>) are lazy-loaded using <code>React.lazy</code> and <code>Suspense</code>.</li>
+            <li><strong>Impact:</strong> The initial JavaScript bundle is significantly smaller, improving First Contentful Paint (FCP).</li>
+        </ul>
+    </li>
 </ul>
-</li>
-</ul>
+
 <h3>7.3. Network Efficiency</h3>
 <ul>
-<li><strong>Caching:</strong> <code>apiService</code> caches Region and Machine Type lists for 5 minutes. This eliminates redundant calls to <code>compute.regions.list</code> when switching tabs.</li>
-<li><strong>Concurrency Control:</strong> The Batch Runner limits concurrent requests to <strong>5</strong>. This prevents browser network stall (Head-of-Line blocking).</li>
+    <li><strong>Caching:</strong> <code>apiService</code> caches Region and Machine Type lists for 5 minutes. This eliminates redundant calls to <code>compute.regions.list</code> when switching tabs.</li>
+    <li><strong>Concurrency Control:</strong> The Batch Runner limits concurrent requests to <strong>5</strong>. This prevents browser network stall (Head-of-Line blocking).</li>
 </ul>
+
 <hr>
-<h2>8. Dependencies &amp; Packages</h2>
+
+<h2>8. Dependencies & Packages</h2>
 <p>The project leverages a modern, robust ecosystem of React libraries. Here is a detailed breakdown of the key dependencies and the rationale for their selection:</p>
+
 <h3>8.1. Core Framework</h3>
 <ul>
-<li><strong><code>react</code> / <code>react-dom</code> (v18.3.1):</strong> The foundation. React 18&#39;s concurrent features (like <code>useTransition</code> and automatic batching) are crucial for the smooth &quot;streaming&quot; UI updates used in the AI components.</li>
-<li><strong><code>vite</code> (v5.0.12):</strong> Chosen over Create React App for its lightning-fast HMR (Hot Module Replacement) and optimized Rollup-based production builds. It handles the complex ESM imports required by the Google GenAI SDK seamlessly.</li>
+    <li><strong><code>react</code> / <code>react-dom</code> (v18.3.1):</strong> The foundation. React 18's concurrent features (like <code>useTransition</code> and automatic batching) are crucial for the smooth "streaming" UI updates used in the AI components.</li>
+    <li><strong><code>vite</code> (v5.0.12):</strong> Chosen over Create React App for its lightning-fast HMR (Hot Module Replacement) and optimized Rollup-based production builds. It handles the complex ESM imports required by the Google GenAI SDK seamlessly.</li>
 </ul>
-<h3>8.2. UI &amp; Styling</h3>
+
+<h3>8.2. UI & Styling</h3>
 <ul>
-<li><strong><code>tailwindcss</code> (v3.4.17):</strong> Utility-first CSS. Allows for rapid UI iteration and consistent design tokens (colors, spacing) without managing large CSS files.</li>
-<li><strong><code>tailwind-merge</code> (v2.6.0) &amp; <code>clsx</code> (v2.1.1):</strong> Essential for building reusable components. They allow us to safely merge default Tailwind classes with custom props (e.g., <code>&lt;Card className=&quot;bg-red-500&quot; /&gt;</code>) without conflict.</li>
-<li><strong><code>lucide-react</code> (v0.469.0):</strong> The icon library. Chosen for its consistency, small bundle size (tree-shakeable), and modern aesthetic compared to Material Icons.</li>
+    <li><strong><code>tailwindcss</code> (v3.4.17):</strong> Utility-first CSS. Allows for rapid UI iteration and consistent design tokens (colors, spacing) without managing large CSS files.</li>
+    <li><strong><code>tailwind-merge</code> (v2.6.0) & <code>clsx</code> (v2.1.1):</strong> Essential for building reusable components. They allow us to safely merge default Tailwind classes with custom props (e.g., <code>&lt;Card className="bg-red-500" /&gt;</code>) without conflict.</li>
+    <li><strong><code>lucide-react</code> (v0.469.0):</strong> The icon library. Chosen for its consistency, small bundle size (tree-shakeable), and modern aesthetic compared to Material Icons.</li>
 </ul>
-<h3>8.3. Animation &amp; Visualization</h3>
+
+<h3>8.3. Animation & Visualization</h3>
 <ul>
-<li><strong><code>framer-motion</code> (v11.0.8):</strong> The industry standard for React animations.<ul>
-<li><em>Usage:</em> It powers the complex layout transitions in the Batch Queue (items sliding in/out), the &quot;Pulse&quot; effect on the Run button, and the smooth entrance of the Results Dashboard.</li>
-<li><em>Why:</em> CSS transitions are insufficient for layout changes (like an item being removed from a list). Framer Motion handles <code>layout</code> animations automatically.</li>
+    <li><strong><code>framer-motion</code> (v11.0.8):</strong> The industry standard for React animations.
+        <ul>
+            <li><em>Usage:</em> It powers the complex layout transitions in the Batch Queue (items sliding in/out), the "Pulse" effect on the Run button, and the smooth entrance of the Results Dashboard.</li>
+            <li><em>Why:</em> CSS transitions are insufficient for layout changes (like an item being removed from a list). Framer Motion handles <code>layout</code> animations automatically.</li>
+        </ul>
+    </li>
+    <li><strong><code>recharts</code> (v3.6.0):</strong> A composable charting library built on D3.
+        <ul>
+            <li><em>Usage:</em> Renders the <code>ZoneComparisonChart</code> (Bar) and <code>ZoneDistributionChart</code> (Donut).</li>
+            <li><em>Why:</em> It is React-native (component-based) and highly customizable, making it easier to integrate with our Tailwind theme than raw D3 or Chart.js.</li>
+        </ul>
+    </li>
 </ul>
-</li>
-<li><strong><code>recharts</code> (v3.6.0):</strong> A composable charting library built on D3.<ul>
-<li><em>Usage:</em> Renders the <code>ZoneComparisonChart</code> (Bar) and <code>ZoneDistributionChart</code> (Donut).</li>
-<li><em>Why:</em> It is React-native (component-based) and highly customizable, making it easier to integrate with our Tailwind theme than raw D3 or Chart.js.</li>
-</ul>
-</li>
-</ul>
-<h3>8.4. AI &amp; Data</h3>
+
+<h3>8.4. AI & Data</h3>
 <ul>
-<li><strong><code>@google/genai</code> (v1.34.0):</strong> The official Google SDK for Gemini.<ul>
-<li><em>Usage:</em> Handles the streaming connection to the Gemini 2.5 Flash model.</li>
-<li><em>Why:</em> Provides a strongly-typed interface for the new <code>generateContentStream</code> API, simplifying the handling of chunks and grounding metadata.</li>
+    <li><strong><code>@google/genai</code> (v1.34.0):</strong> The official Google SDK for Gemini.
+        <ul>
+            <li><em>Usage:</em> Handles the streaming connection to the Gemini 2.5 Flash model.</li>
+            <li><em>Why:</em> Provides a strongly-typed interface for the new <code>generateContentStream</code> API, simplifying the handling of chunks and grounding metadata.</li>
+        </ul>
+    </li>
+    <li><strong><code>react-markdown</code> (v10.1.0):</strong> Renders the AI's Markdown response safely.
+        <ul>
+            <li><em>Why:</em> The AI outputs structured text (tables, lists, bolding). This library converts it to HTML while sanitizing inputs to prevent XSS.</li>
+        </ul>
+    </li>
 </ul>
-</li>
-<li><strong><code>react-markdown</code> (v10.1.0):</strong> Renders the AI&#39;s Markdown response safely.<ul>
-<li><em>Why:</em> The AI outputs structured text (tables, lists, bolding). This library converts it to HTML while sanitizing inputs to prevent XSS.</li>
-</ul>
-</li>
-</ul>
+
 <h3>8.5. Utilities</h3>
 <ul>
-<li><strong><code>jspdf</code> (v2.5.2) &amp; <code>jspdf-autotable</code> (v3.8.4):</strong><ul>
-<li><em>Usage:</em> Generates the PDF export of the capacity report.</li>
-<li><em>Why:</em> Allows for client-side PDF generation without a backend. <code>autotable</code> is specifically used to render the complex data grids into the PDF.</li>
+    <li><strong><code>jspdf</code> (v2.5.2) & <code>jspdf-autotable</code> (v3.8.4):</strong>
+        <ul>
+            <li><em>Usage:</em> Generates the PDF export of the capacity report.
+            <li><em>Why:</em> Allows for client-side PDF generation without a backend. <code>autotable</code> is specifically used to render the complex data grids into the PDF.</li>
+        </ul>
+    </li>
 </ul>
-</li>
-</ul>
+
 <hr>
+
 <h2>9. Developer Guide</h2>
+
 <h3>9.1. Key Files</h3>
 <ul>
-<li><strong><code>src/hooks/useCapacityLogic.ts</code></strong>: The &quot;Controller&quot;. It holds the <code>AppState</code> and exposes actions (<code>handleSearch</code>, <code>addScenario</code>). If you need to add a new global state variable, add it here.</li>
-<li><strong><code>src/services/apiService.ts</code></strong>: The &quot;Model&quot;. It defines the <code>gcpRequest</code> wrapper. If you need to add a new API endpoint, add a function here.</li>
-<li><strong><code>src/components/ConfigurationPanel.tsx</code></strong>: The &quot;View&quot; for inputs. It handles validation logic and UI feedback.</li>
+    <li><strong><code>src/hooks/useCapacityLogic.ts</code>:</strong> The "Controller". It holds the <code>AppState</code> and exposes actions (<code>handleSearch</code>, <code>addScenario</code>). If you need to add a new global state variable, add it here.</li>
+    <li><strong><code>src/services/apiService.ts</code>:</strong> The "Model". It defines the <code>gcpRequest</code> wrapper. If you need to add a new API endpoint, add a function here.</li>
+    <li><strong><code>src/components/ConfigurationPanel.tsx</code>:</strong> The "View" for inputs. It handles validation logic and UI feedback.</li>
 </ul>
+
 <h3>9.2. Adding a New Feature</h3>
 <ol>
-<li><strong>Define Types:</strong> Update <code>src/types.ts</code> with any new data structures.</li>
-<li><strong>Update State:</strong> Add fields to <code>AppState</code> in <code>useCapacityLogic.ts</code>.</li>
-<li><strong>Update UI:</strong> Create/Modify components in <code>src/components/</code>.</li>
-<li><strong>Add Logic:</strong> Implement the feature in <code>useCapacityLogic.ts</code>.</li>
-<li><strong>Verify:</strong> Run <code>npm run lint</code> and check <code>DebugConsole</code> for errors.</li>
+    <li><strong>Define Types:</strong> Update <code>src/types.ts</code> with any new data structures.</li>
+    <li><strong>Update State:</strong> Add fields to <code>AppState</code> in <code>useCapacityLogic.ts</code>.</li>
+    <li><strong>Update UI:</strong> Create/Modify components in <code>src/components/</code>.</li>
+    <li><strong>Add Logic:</strong> Implement the feature in <code>useCapacityLogic.ts</code>.</li>
+    <li><strong>Verify:</strong> Run <code>npm run lint</code> and check <code>DebugConsole</code> for errors.</li>
 </ol>
+
 <h3>9.3. Debugging</h3>
 <ul>
-<li><strong>Debug Console:</strong> Press the &quot;Terminal&quot; icon (bottom right) to open the built-in debugger. It shows:<ul>
-<li><strong>State:</strong> Current snapshot of <code>AppState</code>.</li>
-<li><strong>Logs:</strong> Internal application logs.</li>
-<li><strong>Network:</strong> Redacted headers/bodies of all API calls.</li>
-<li><strong>Gemini:</strong> Raw prompts and responses from the AI.</li>
+    <li><strong>Debug Console:</strong> Press the "Terminal" icon (bottom right) to open the built-in debugger. It shows:
+        <ul>
+            <li><strong>State:</strong> Current snapshot of <code>AppState</code>.</li>
+            <li><strong>Logs:</strong> Internal application logs.</li>
+            <li><strong>Network:</strong> Redacted headers/bodies of all API calls.</li>
+            <li><strong>Gemini:</strong> Raw prompts and responses from the AI.</li>
+        </ul>
+    </li>
 </ul>
-</li>
-</ul>
+
 <hr>
-<h2>10. Recent Changelog (v2.18.1)</h2>
+
+<h2>10. Recent Changelog (v2.18.2)</h2>
 <ul>
-<li><strong>Feature:</strong> Added <code>retryScenario</code> to allow re-running specific failed batch items.</li>
-<li><strong>Feature:</strong> Added <code>resetApplication</code> for a full factory reset.</li>
-<li><strong>UX:</strong> Implemented &quot;Configuration Drift&quot; detection (Blinking Run button + Toast).</li>
-<li><strong>Docs:</strong> Major expansion of <code>project_history.md</code> (this file).</li>
-<li><strong>Security:</strong> Enhanced token validation logic in <code>validateTokenScopes</code>.</li>
+    <li><strong>Performance:</strong> Implemented 60s TTL Caching for AI Insights (<code>useStreamAI</code>) to prevent redundant API calls on UI interactions.</li>
+    <li><strong>Bug Fix:</strong> Fixed issue where AI requests would reload when scrolling or navigating away by implementing stable cache keys based on Scenario ID.</li>
+    <li><strong>Refactor:</strong> Cleaned up `useCapacityLogic` to remove unused AI streaming state, delegating AI management fully to individual result cards.</li>
+    <li><strong>UX:</strong> Enhanced "Configuration Drift" detection. The Run button now visually pulses and changes text to "Update Analysis" when settings are modified after a run.</li>
+    <li><strong>UI Polish:</strong>
+        <ul>
+            <li>Refined <code>card-panel</code> with subtle inner rings and hover lift effects.</li>
+            <li>Redesigned <code>ResultsDashboard</code> empty state for a better onboarding experience.</li>
+            <li>Added <code>CommandCell</code> to Comparison View for one-click command copying.</li>
+            <li>Standardized typography: <strong>Inter</strong> (Body), <strong>Space Grotesk</strong> (Headings/Display), <strong>JetBrains Mono</strong> (Code).</li>
+        </ul>
+    </li>
+    <li><strong>Feature:</strong> Added "Top Pick" ribbon and expanded details view to <code>ZoneComparisonChart</code>.</li>
+    <li><strong>Feature:</strong> Added <code>resetApplication</code> for a full factory reset.</li>
+    <li><strong>Security:</strong> Enhanced token validation logic in <code>validateTokenScopes</code>.</li>
 </ul>
+
 <hr>
+
 <h2>11. Reverse Engineering Reference</h2>
-<p>This section contains low-level details useful for debugging, extending, or reverse-engineering the application&#39;s behavior.</p>
+<p>This section contains low-level details useful for debugging, extending, or reverse-engineering the application's behavior.</p>
+
 <h3>11.1. API Request Schema (<code>CapacityAdvisorRequest</code>)</h3>
 <p>The application sends this exact JSON structure to the Google Cloud Capacity API.</p>
-<pre><code class="language-typescript">interface CapacityAdvisorRequest {
+<pre><code>interface CapacityAdvisorRequest {
   instanceProperties: {
     scheduling: {
-      provisioningModel: &quot;SPOT&quot; | &quot;STANDARD&quot;;
+      provisioningModel: "SPOT" | "STANDARD";
     };
   };
   instanceFlexibilityPolicy: {
     instanceSelections: {
       [key: string]: {
-        machineTypes: string[]; // e.g., [&quot;n2-standard-4&quot;]
+        machineTypes: string[]; // e.g., ["n2-standard-4"]
       };
     };
   };
   distributionPolicy: {
-    targetShape: &quot;ANY&quot; | &quot;ANY_SINGLE_ZONE&quot;;
-    zones?: Array&lt;{ zone: string }&gt;; // Optional constraint
+    targetShape: "ANY" | "ANY_SINGLE_ZONE";
+    zones?: Array<{ zone: string }>; // Optional constraint
   };
   size: number; // Total instance count requested
-}
-</code></pre>
+}</code></pre>
+
 <h3>11.2. API Response Schema (<code>CapacityAdvisorResponse</code>)</h3>
 <p>The application expects this structure back. Note that <code>scores</code> can be an array or an object depending on the API version (Alpha vs V1), and the app handles both via normalization.</p>
-<pre><code class="language-typescript">interface CapacityAdvisorResponse {
-  recommendations: Array&lt;{
-    scores: Array&lt;{ name: string; value: number }&gt; | {
+<pre><code>interface CapacityAdvisorResponse {
+  recommendations: Array<{
+    scores: Array<{ name: string; value: number }> | {
       obtainability: number; // 0.0 to 1.0
       uptimeScore: number;   // 0.0 to 1.0
     };
-    shards: Array&lt;{
-      location?: string; // e.g., &quot;projects/.../zones/us-central1-a&quot;
+    shards: Array<{
+      location?: string; // e.g., "projects/.../zones/us-central1-a"
       zone?: string;     // Normalized field
       machineType: string;
       instanceCount: number;
-      provisioningModel: &quot;SPOT&quot;;
-    }&gt;;
-  }&gt;;
-}
-</code></pre>
-<h3>11.3. Custom CSS &amp; Animations (<code>styles.css</code>)</h3>
+      provisioningModel: "SPOT";
+    }>;
+  }>;
+}</code></pre>
+
+<h3>11.3. Custom CSS & Animations (<code>styles.css</code>)</h3>
 <p>The app uses Tailwind CSS with custom utility classes defined in <code>src/styles.css</code>.</p>
 <ul>
-<li><strong>Animations:</strong><ul>
-<li><code>@keyframes pulse-ring</code>: Creates the &quot;radar ping&quot; effect on the Run button when configuration changes.</li>
-<li><code>@keyframes fadeInUp</code>: Used for the smooth entry of cards in the dashboard.</li>
+    <li><strong>Animations:</strong>
+        <ul>
+            <li><code>@keyframes pulse-ring</code>: Creates the "radar ping" effect on the Run button when configuration changes.</li>
+            <li><code>@keyframes fadeInUp</code>: Used for the smooth entry of cards in the dashboard.</li>
+        </ul>
+    </li>
+    <li><strong>Component Classes:</strong>
+        <ul>
+            <li><code>.card-panel</code>: Adds the "glassy" border, hover glow, and subtle shadow.</li>
+            <li><code>.input-field</code>: Standardizes form inputs with a specific focus ring color (<code>indigo-500</code>).</li>
+            <li><code>.btn-primary</code>: The main action button with a custom shadow stack.</li>
+        </ul>
+    </li>
 </ul>
-</li>
-<li><strong>Component Classes:</strong><ul>
-<li><code>.card-panel</code>: Adds the &quot;glassy&quot; border, hover glow, and subtle shadow.</li>
-<li><code>.input-field</code>: Standardizes form inputs with a specific focus ring color (<code>indigo-500</code>).</li>
-<li><code>.btn-primary</code>: The main action button with a custom shadow stack.</li>
-</ul>
-</li>
-</ul>
+
 <h3>11.4. Configuration Constants (<code>config.ts</code>)</h3>
 <ul>
-<li><strong><code>REGIONS</code></strong>: A hardcoded list of supported GCP regions (e.g., <code>us-central1</code>, <code>europe-west4</code>).</li>
-<li><strong><code>REGION_CONFIG</code></strong>: Maps regions to their specific zones (e.g., <code>us-central1</code> -&gt; <code>[&#39;us-central1-a&#39;, &#39;us-central1-b&#39;, ...]</code>).</li>
-<li><strong><code>MACHINE_TYPES</code></strong>: A massive array of machine type definitions generated programmatically to save bundle size.<ul>
-<li><em>Generation Logic:</em> Helper functions like <code>generateMachineTypes</code> create permutations of series (N2, C3), suffixes (standard, highmem), and core counts.</li>
+    <li><strong><code>REGIONS</code>:</strong> A hardcoded list of supported GCP regions (e.g., <code>us-central1</code>, <code>europe-west4</code>).</li>
+    <li><strong><code>REGION_CONFIG</code>:</strong> Maps regions to their specific zones (e.g., <code>us-central1</code> -> <code>['us-central1-a', 'us-central1-b', ...]</code>).</li>
+    <li><strong><code>MACHINE_TYPES</code>:</strong> A massive array of machine type definitions generated programmatically to save bundle size.
+        <ul>
+            <li><em>Generation Logic:</em> Helper functions like <code>generateMachineTypes</code> create permutations of series (N2, C3), suffixes (standard, highmem), and core counts.</li>
+        </ul>
+    </li>
 </ul>
-</li>
-</ul>
+
 <h3>11.5. Hook Internals (<code>useCapacityLogic</code>)</h3>
 <ul>
-<li><strong>Dependency Chain:</strong><ul>
-<li><code>runBatchAnalysis</code> depends on <code>state.scenarios</code> and <code>state.accessToken</code>.</li>
-<li><code>useEffect</code> for <strong>History Sync</strong> depends on <code>state.accessToken</code> and <code>state.project</code>.</li>
-<li><code>useEffect</code> for <strong>Data Freshness</strong> runs every 15s to check <code>lastFetchTimeRef</code>.</li>
+    <li><strong>Dependency Chain:</strong>
+        <ul>
+            <li><code>runBatchAnalysis</code> depends on <code>state.scenarios</code> and <code>state.accessToken</code>.</li>
+            <li><code>useEffect</code> for <strong>History Sync</strong> depends on <code>state.accessToken</code> and <code>state.project</code>.</li>
+            <li><code>useEffect</code> for <strong>Data Freshness</strong> runs every 15s to check <code>lastFetchTimeRef</code>.</li>
+        </ul>
+    </li>
+    <li><strong>Ref Usage:</strong>
+        <ul>
+            <li><code>abortControllerRef</code>: Used to cancel in-flight API requests when the user clicks "Stop" or navigates away.</li>
+            <li><code>lastRunConfigRef</code>: Used to detect "Configuration Drift" by comparing it with current state.</li>
+        </ul>
+    </li>
 </ul>
-</li>
-<li><strong>Ref Usage:</strong><ul>
-<li><code>abortControllerRef</code>: Used to cancel in-flight API requests when the user clicks &quot;Stop&quot; or navigates away.</li>
-<li><code>lastRunConfigRef</code>: Used to detect &quot;Configuration Drift&quot; by comparing it with current state.</li>
-</ul>
-</li>
-</ul>
+
 <hr>
-<h2>12. Advanced State &amp; Error Handling</h2>
+
+<h2>12. Advanced State & Error Handling</h2>
 <p>This section details the robust error handling and state management strategies employed to ensure enterprise-grade reliability.</p>
+
 <h3>12.1. Global Error Boundary (<code>ErrorBoundary.tsx</code>)</h3>
 <p>The entire application is wrapped in a React Error Boundary to catch unhandled exceptions in the component tree (e.g., rendering errors, undefined prop access).</p>
 <ul>
-<li><strong>Behavior:</strong><ul>
-<li>Catches errors during the render phase, lifecycle methods, and constructors of children.</li>
-<li><strong>Fallback UI:</strong> Displays a &quot;Component Error&quot; card with a &quot;Reload Page&quot; button and a collapsible stack trace (in development).</li>
-<li><strong>Recovery:</strong> The &quot;Reload Page&quot; button triggers <code>window.location.reload()</code> to reset the application state completely.</li>
+    <li><strong>Behavior:</strong>
+        <ul>
+            <li>Catches errors during the render phase, lifecycle methods, and constructors of children.</li>
+            <li><strong>Fallback UI:</strong> Displays a "Component Error" card with a "Reload Page" button and a collapsible stack trace (in development).</li>
+            <li><strong>Recovery:</strong> The "Reload Page" button triggers <code>window.location.reload()</code> to reset the application state completely.</li>
+        </ul>
+    </li>
+    <li><strong>Usage:</strong> Wraps the main <code>&lt;App /&gt;</code> component in <code>index.tsx</code>.</li>
 </ul>
-</li>
-<li><strong>Usage:</strong> Wraps the main <code>&lt;App /&gt;</code> component in <code>index.tsx</code>.</li>
-</ul>
-<h3>12.2. State Machine &amp; Transitions (<code>useCapacityLogic.ts</code>)</h3>
+
+<h3>12.2. State Machine & Transitions (<code>useCapacityLogic.ts</code>)</h3>
 <p>The <code>AppState</code> object acts as a finite state machine for the analysis workflow.</p>
 <table>
-<thead>
-<tr>
-<th align="left">State</th>
-<th align="left">Trigger</th>
-<th align="left">Next State</th>
-<th align="left">Side Effects</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><strong>Idle</strong></td>
-<td align="left"><code>runBatchAnalysis</code></td>
-<td align="left"><strong>Loading</strong></td>
-<td align="left">Clears <code>result</code>, <code>error</code>. Sets <code>loading=true</code>.</td>
-</tr>
-<tr>
-<td align="left"><strong>Loading</strong></td>
-<td align="left">API Success (200)</td>
-<td align="left"><strong>Success</strong></td>
-<td align="left">Sets <code>batchResults</code>, <code>loading=false</code>. Triggers <code>useStreamAI</code>.</td>
-</tr>
-<tr>
-<td align="left"><strong>Loading</strong></td>
-<td align="left">API Error (4xx/5xx)</td>
-<td align="left"><strong>Error</strong></td>
-<td align="left">Sets <code>error</code>, <code>loading=false</code>. Logs to Debug Console.</td>
-</tr>
-<tr>
-<td align="left"><strong>Success</strong></td>
-<td align="left"><code>streamComparisonInsights</code></td>
-<td align="left"><strong>Streaming</strong></td>
-<td align="left">Updates <code>groundingMetadata</code> incrementally.</td>
-</tr>
-<tr>
-<td align="left"><strong>Streaming</strong></td>
-<td align="left">Stream End / Abort</td>
-<td align="left"><strong>Idle</strong></td>
-<td align="left">Sets <code>groundingLoading=false</code>.</td>
-</tr>
-</tbody></table>
+    <thead>
+        <tr>
+            <th>State</th>
+            <th>Trigger</th>
+            <th>Next State</th>
+            <th>Side Effects</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Idle</strong></td>
+            <td><code>runBatchAnalysis</code></td>
+            <td><strong>Loading</strong></td>
+            <td>Clears <code>result</code>, <code>error</code>. Sets <code>loading=true</code>.</td>
+        </tr>
+        <tr>
+            <td><strong>Loading</strong></td>
+            <td>API Success (200)</td>
+            <td><strong>Success</strong></td>
+            <td>Sets <code>batchResults</code>, <code>loading=false</code>. Triggers <code>useStreamAI</code>.</td>
+        </tr>
+        <tr>
+            <td><strong>Loading</strong></td>
+            <td>API Error (4xx/5xx)</td>
+            <td><strong>Error</strong></td>
+            <td>Sets <code>error</code>, <code>loading=false</code>. Logs to Debug Console.</td>
+        </tr>
+        <tr>
+            <td><strong>Success</strong></td>
+            <td><code>streamComparisonInsights</code></td>
+            <td><strong>Streaming</strong></td>
+            <td>Updates <code>groundingMetadata</code> incrementally.</td>
+        </tr>
+        <tr>
+            <td><strong>Streaming</strong></td>
+            <td>Stream End / Abort</td>
+            <td><strong>Idle</strong></td>
+            <td>Sets <code>groundingLoading=false</code>.</td>
+        </tr>
+    </tbody>
+</table>
+
 <h3>12.3. Granular Error Classification</h3>
 <p>The application distinguishes between different types of errors to provide actionable user feedback.</p>
 <ol>
-<li><p><strong>Validation Errors (Pre-Flight):</strong></p>
-<ul>
-<li><em>Source:</em> <code>ConfigurationPanel</code> / <code>useCapacityLogic</code>.</li>
-<li><em>UI:</em> Red border on input fields, helper text (e.g., &quot;Invalid Project ID format&quot;).</li>
-<li><em>Blocking:</em> Prevents the &quot;Run&quot; button from being clicked.</li>
-</ul>
-</li>
-<li><p><strong>Authentication Errors (401/403):</strong></p>
-<ul>
-<li><em>Source:</em> <code>apiService.ts</code> -&gt; <code>gcpRequest</code>.</li>
-<li><em>Detection:</em> HTTP status code.</li>
-<li><em>UI:</em> Toast notification: &quot;Authentication Failed. Please refresh your token.&quot;</li>
-<li><em>Action:</em> User must run <code>gcloud auth</code> again.</li>
-</ul>
-</li>
-<li><p><strong>Quota/Rate Limit Errors (429):</strong></p>
-<ul>
-<li><em>Source:</em> <code>rateLimiter.ts</code> or API response.</li>
-<li><em>Handling:</em> Automatic exponential backoff (retry).</li>
-<li><em>UI:</em> If retries fail, Toast: &quot;API Quota Exceeded.&quot;</li>
-</ul>
-</li>
-<li><p><strong>Stockout Errors (Logic 404):</strong></p>
-<ul>
-<li><em>Source:</em> API returns 200 OK but empty <code>recommendations</code> list.</li>
-<li><em>Handling:</em> Treated as a &quot;Soft Error&quot;.</li>
-<li><em>UI:</em> Specialized &quot;Empty State&quot; illustration in <code>ResultsDashboard</code> advising the user to broaden their search (e.g., &quot;Try &#39;Any&#39; shape&quot;).</li>
-</ul>
-</li>
+    <li><strong>Validation Errors (Pre-Flight):</strong>
+        <ul>
+            <li><em>Source:</em> <code>ConfigurationPanel</code> / <code>useCapacityLogic</code>.</li>
+            <li><em>UI:</em> Red border on input fields, helper text (e.g., "Invalid Project ID format").</li>
+            <li><em>Blocking:</em> Prevents the "Run" button from being clicked.</li>
+        </ul>
+    </li>
+    <li><strong>Authentication Errors (401/403):</strong>
+        <ul>
+            <li><em>Source:</em> <code>apiService.ts</code> -> <code>gcpRequest</code>.</li>
+            <li><em>Detection:</em> HTTP status code.</li>
+            <li><em>UI:</em> Toast notification: "Authentication Failed. Please refresh your token."</li>
+            <li><em>Action:</em> User must run <code>gcloud auth</code> again.</li>
+        </ul>
+    </li>
+    <li><strong>Quota/Rate Limit Errors (429):</strong>
+        <ul>
+            <li><em>Source:</em> <code>rateLimiter.ts</code> or API response.</li>
+            <li><em>Handling:</em> Automatic exponential backoff (retry).</li>
+            <li><em>UI:</em> If retries fail, Toast: "API Quota Exceeded."</li>
+        </ul>
+    </li>
+    <li><strong>Stockout Errors (Logic 404):</strong>
+        <ul>
+            <li><em>Source:</em> API returns 200 OK but empty <code>recommendations</code> list.</li>
+            <li><em>Handling:</em> Treated as a "Soft Error".</li>
+            <li><em>UI:</em> Specialized "Empty State" illustration in <code>ResultsDashboard</code> advising the user to broaden their search (e.g., "Try 'Any' shape").</li>
+        </ul>
+    </li>
 </ol>
+
 <h3>12.4. React Query-like Patterns (Custom Implementation)</h3>
 <p>While not using <code>react-query</code>, the app implements similar patterns in <code>useCapacityLogic</code>:</p>
 <ul>
-<li><strong>Stale-While-Revalidate:</strong> The app displays previous results (<code>state.result</code>) while a new batch run (<code>state.loading</code>) is in progress, preventing UI flicker.</li>
-<li><strong>Optimistic Updates:</strong> When adding a scenario to the queue, the UI updates immediately before any background validation occurs.</li>
-<li><strong>Ref-based Freshness:</strong> <code>lastFetchTimeRef</code> tracks the timestamp of the last successful data fetch. A <code>useEffect</code> interval checks this every 15s and shows a &quot;Stale Data&quot; warning toast if data is &gt;2 minutes old.</li>
+    <li><strong>Stale-While-Revalidate:</strong> The app displays previous results (<code>state.result</code>) while a new batch run (<code>state.loading</code>) is in progress, preventing UI flicker.</li>
+    <li><strong>Optimistic Updates:</strong> When adding a scenario to the queue, the UI updates immediately before any background validation occurs.</li>
+    <li><strong>Ref-based Freshness:</strong> <code>lastFetchTimeRef</code> tracks the timestamp of the last successful data fetch. A <code>useEffect</code> interval checks this every 15s and shows a "Stale Data" warning toast if data is >2 minutes old.</li>
 </ul>
+
 <hr>
-<h2>13. GCP Integration &amp; Permissions</h2>
-<p>This section details the specific Google Cloud Platform (GCP) requirements for the application to function in &quot;Real Mode&quot;.</p>
+
+<h2>13. GCP Integration & Permissions</h2>
+<p>This section details the specific Google Cloud Platform (GCP) requirements for the application to function in "Real Mode".</p>
+
 <h3>13.1. Required IAM Permissions</h3>
-<p>The user&#39;s Access Token must be associated with a principal (User or Service Account) that has the following permissions on the target Project:</p>
+<p>The user's Access Token must be associated with a principal (User or Service Account) that has the following permissions on the target Project:</p>
 <ul>
-<li><strong><code>compute.regions.list</code></strong>: Required to fetch the list of available regions.</li>
-<li><strong><code>compute.zones.list</code></strong>: Required to fetch zones within a region.</li>
-<li><strong><code>compute.machineTypes.list</code></strong>: Required to populate the Machine Type dropdown dynamically.</li>
-<li><strong><code>compute.instanceGroupManagers.list</code></strong> (Optional): Used for future integrations with Managed Instance Groups.</li>
-<li><strong><code>compute.capacity.get</code></strong> (Alpha): The core permission required to query the Capacity Advisor API.</li>
+    <li><strong><code>compute.regions.list</code></strong>: Required to fetch the list of available regions.</li>
+    <li><strong><code>compute.zones.list</code></strong>: Required to fetch zones within a region.</li>
+    <li><strong><code>compute.machineTypes.list</code></strong>: Required to populate the Machine Type dropdown dynamically.</li>
+    <li><strong><code>compute.instanceGroupManagers.list</code></strong> (Optional): Used for future integrations with Managed Instance Groups.</li>
+    <li><strong><code>compute.capacity.get</code></strong> (Alpha): The core permission required to query the Capacity Advisor API.</li>
 </ul>
 <p><strong>Recommended Role:</strong></p>
 <ul>
-<li><code>roles/compute.viewer</code> (Contains all the above read-only permissions).</li>
+    <li><code>roles/compute.viewer</code> (Contains all the above read-only permissions).</li>
 </ul>
+
 <h3>13.2. Required API Enablement</h3>
 <p>The target GCP Project must have the following APIs enabled:</p>
 <ol>
-<li><strong>Compute Engine API</strong> (<code>compute.googleapis.com</code>): Core infrastructure API.</li>
-<li><strong>Service Usage API</strong> (<code>serviceusage.googleapis.com</code>): Used to check quota and API status.</li>
-<li><strong>Cloud Storage JSON API</strong> (<code>storage-api.googleapis.com</code>): Required if using the History Sync feature.</li>
+    <li><strong>Compute Engine API</strong> (<code>compute.googleapis.com</code>): Core infrastructure API.</li>
+    <li><strong>Service Usage API</strong> (<code>serviceusage.googleapis.com</code>): Used to check quota and API status.</li>
+    <li><strong>Cloud Storage JSON API</strong> (<code>storage-api.googleapis.com</code>): Required if using the History Sync feature.</li>
 </ol>
-<h3>13.3. OAuth Scope &amp; Token Usage</h3>
+
+<h3>13.3. OAuth Scope & Token Usage</h3>
 <p>The application strictly adheres to the Principle of Least Privilege regarding OAuth scopes.</p>
 <ul>
-<li><strong>Scope Requested:</strong> <code>https://www.googleapis.com/auth/compute.readonly</code><ul>
-<li><em>Why:</em> This scope allows reading configuration and capacity data but <strong>prevents</strong> the application from creating, deleting, or modifying any infrastructure (VMs, Disks, Firewalls).</li>
+    <li><strong>Scope Requested:</strong> <code>https://www.googleapis.com/auth/compute.readonly</code>
+        <ul>
+            <li><em>Why:</em> This scope allows reading configuration and capacity data but <strong>prevents</strong> the application from creating, deleting, or modifying any infrastructure (VMs, Disks, Firewalls).</li>
+        </ul>
+    </li>
+    <li><strong>Token Handling:</strong>
+        <ul>
+            <li>The app does <em>not</em> implement an OAuth login flow (to avoid hosting a backend for client secrets).</li>
+            <li>It relies on the user providing a valid Access Token, typically generated via the CLI:
+                <pre><code>gcloud auth print-access-token</code></pre>
+            </li>
+            <li><strong>Validation:</strong> The <code>validateTokenScopes</code> function in <code>apiService.ts</code> calls <code>https://oauth2.googleapis.com/tokeninfo</code> to verify that the provided token actually has the <code>compute.readonly</code> scope before making any API calls.</li>
+        </ul>
+    </li>
 </ul>
-</li>
-<li><strong>Token Handling:</strong><ul>
-<li>The app does <em>not</em> implement an OAuth login flow (to avoid hosting a backend for client secrets).</li>
-<li>It relies on the user providing a valid Access Token, typically generated via the CLI:<pre><code class="language-bash">gcloud auth print-access-token
-</code></pre>
-</li>
-<li><strong>Validation:</strong> The <code>validateTokenScopes</code> function in <code>apiService.ts</code> calls <code>https://oauth2.googleapis.com/tokeninfo</code> to verify that the provided token actually has the <code>compute.readonly</code> scope before making any API calls.</li>
-</ul>
-</li>
-</ul>
+
 <h3>13.4. Real Mode Operational Details</h3>
-<p>When <code>state.mockMode</code> is set to <code>false</code>, the application enters &quot;Real Mode&quot; with the following operational characteristics:</p>
+<p>When <code>state.mockMode</code> is set to <code>false</code>, the application enters "Real Mode" with the following operational characteristics:</p>
 <ol>
-<li><p><strong>API Latency &amp; Timeouts:</strong></p>
-<ul>
-<li><strong>Typical Latency:</strong> 200ms - 800ms per request.</li>
-<li><strong>Timeout:</strong> The <code>gcpRequest</code> wrapper enforces a strict <strong>30-second timeout</strong> via <code>AbortController</code>. If the API hangs, the request is aborted to prevent UI freezing.</li>
-<li><strong>Retries:</strong> The <code>apiService</code> implements a <strong>3-attempt exponential backoff</strong> strategy for 5xx server errors and 429 rate limit errors.</li>
-</ul>
-</li>
-<li><p><strong>Data Freshness &amp; Caching:</strong></p>
-<ul>
-<li><strong>Capacity Data:</strong> <strong>Never cached</strong>. Every &quot;Run&quot; click triggers a fresh call to the Capacity API to ensure real-time accuracy.</li>
-<li><strong>Metadata (Regions/Machine Types):</strong> Cached in-memory for <strong>5 minutes</strong> to reduce API chatter. This cache is cleared on page refresh.</li>
-</ul>
-</li>
-<li><p><strong>Cross-Origin Resource Sharing (CORS):</strong></p>
-<ul>
-<li>The Google Cloud APIs (<code>compute.googleapis.com</code>) support CORS out-of-the-box for authenticated requests from any origin, provided a valid OAuth token is present. No server-side proxy is required.</li>
-</ul>
-</li>
-<li><p><strong>Quota Consumption:</strong></p>
-<ul>
-<li>API calls consume the standard &quot;Read&quot; quota for the Compute Engine API.</li>
-<li><strong>Cost:</strong> The Capacity Advisor API is currently free to use (Alpha/Preview), but standard API operation limits apply.</li>
-</ul>
-</li>
+    <li><strong>API Latency & Timeouts:</strong>
+        <ul>
+            <li><strong>Typical Latency:</strong> 200ms - 800ms per request.</li>
+            <li><strong>Timeout:</strong> The <code>gcpRequest</code> wrapper enforces a strict <strong>30-second timeout</strong> via <code>AbortController</code>. If the API hangs, the request is aborted to prevent UI freezing.</li>
+            <li><strong>Retries:</strong> The <code>apiService</code> implements a <strong>3-attempt exponential backoff</strong> strategy for 5xx server errors and 429 rate limit errors.</li>
+        </ul>
+    </li>
+    <li><strong>Data Freshness & Caching:</strong>
+        <ul>
+            <li><strong>Capacity Data:</strong> <strong>Never cached</strong>. Every "Run" click triggers a fresh call to the Capacity API to ensure real-time accuracy.</li>
+            <li><strong>Metadata (Regions/Machine Types):</strong> Cached in-memory for <strong>5 minutes</strong> to reduce API chatter. This cache is cleared on page refresh.</li>
+        </ul>
+    </li>
+    <li><strong>Cross-Origin Resource Sharing (CORS):</strong>
+        <ul>
+            <li>The Google Cloud APIs (<code>compute.googleapis.com</code>) support CORS out-of-the-box for authenticated requests from any origin, provided a valid OAuth token is present. No server-side proxy is required.</li>
+        </ul>
+    </li>
+    <li><strong>Quota Consumption:</strong>
+        <ul>
+            <li>API calls consume the standard "Read" quota for the Compute Engine API.</li>
+            <li><strong>Cost:</strong> The Capacity Advisor API is currently free to use (Alpha/Preview), but standard API operation limits apply.</li>
+        </ul>
+    </li>
 </ol>
+
 <hr>
-<h2>14. Enterprise Compliance &amp; Vibe Coding Verification</h2>
-<p>This section addresses specific concerns for Enterprise Architecture Review Boards (ARB) and Security Compliance teams evaluating this &quot;Vibe Coded&quot; (AI-Assisted) application for internal adoption.</p>
-<h3>14.1. &quot;Vibe Coding&quot; Risk Mitigation</h3>
-<p>While the application code was generated using advanced AI assistance (&quot;Vibe Coding&quot;), it adheres to strict engineering standards to mitigate non-deterministic risks.</p>
+
+<h2>14. Enterprise Compliance & Vibe Coding Verification</h2>
+<p>This section addresses specific concerns for Enterprise Architecture Review Boards (ARB) and Security Compliance teams evaluating this "Vibe Coded" (AI-Assisted) application for internal adoption.</p>
+
+<h3>14.1. "Vibe Coding" Risk Mitigation</h3>
+<p>While the application code was generated using advanced AI assistance ("Vibe Coding"), it adheres to strict engineering standards to mitigate non-deterministic risks.</p>
 <ul>
-<li><strong>Deterministic Output:</strong> The AI generated standard, human-readable TypeScript/React code. There is no &quot;AI Runtime&quot; or &quot;Black Box&quot; logic executing in the browser. The build artifact is standard JavaScript.</li>
-<li><strong>Type Safety:</strong> The codebase uses <strong>Strict TypeScript</strong> (<code>noImplicitAny: true</code>). All API interfaces (<code>CapacityAdvisorRequest</code>, <code>CapacityAdvisorResponse</code>) are strongly typed in <code>types.ts</code>, preventing &quot;hallucinated&quot; object access.</li>
-<li><strong>Linting &amp; Static Analysis:</strong> The code passes standard ESLint rules for React Hooks and accessibility.</li>
-<li><strong>No Vendor Lock-in:</strong> The application does not rely on any proprietary &quot;Vibe&quot; platform to run. It is a standard Vite project deployable to any static host (Cloud Run, S3, Nginx).</li>
+    <li><strong>Deterministic Output:</strong> The AI generated standard, human-readable TypeScript/React code. There is no "AI Runtime" or "Black Box" logic executing in the browser. The build artifact is standard JavaScript.</li>
+    <li><strong>Type Safety:</strong> The codebase uses <strong>Strict TypeScript</strong> (<code>noImplicitAny: true</code>). All API interfaces (<code>CapacityAdvisorRequest</code>, <code>CapacityAdvisorResponse</code>) are strongly typed in <code>types.ts</code>, preventing "hallucinated" object access.</li>
+    <li><strong>Linting & Static Analysis:</strong> The code passes standard ESLint rules for React Hooks and accessibility.</li>
+    <li><strong>No Vendor Lock-in:</strong> The application does not rely on any proprietary "Vibe" platform to run. It is a standard Vite project deployable to any static host (Cloud Run, S3, Nginx).</li>
 </ul>
-<h3>14.2. Data Privacy &amp; DLP</h3>
+
+<h3>14.2. Data Privacy & DLP</h3>
 <ul>
-<li><strong>Zero Third-Party Data Exfiltration:</strong> The application communicates <strong>exclusively</strong> with:<ol>
-<li><code>googleapis.com</code> (Official Google Cloud APIs).</li>
-<li>The hosting origin (for static assets).</li>
-</ol>
-</li>
-<li><strong>No Telemetry:</strong> There are no embedded analytics trackers (Google Analytics, Segment, Mixpanel) in the source code.</li>
-<li><strong>Ephemeral State:</strong> All business data (Project IDs, Capacity Results) resides in the browser&#39;s volatile memory (React State). <code>localStorage</code> is used <em>only</em> for UI preferences (Theme, last used Region) and explicitly excludes Access Tokens.</li>
+    <li><strong>Zero Third-Party Data Exfiltration:</strong> The application communicates <strong>exclusively</strong> with:
+        <ol>
+            <li><code>googleapis.com</code> (Official Google Cloud APIs).</li>
+            <li>The hosting origin (for static assets).</li>
+        </ol>
+    </li>
+    <li><strong>No Telemetry:</strong> There are no embedded analytics trackers (Google Analytics, Segment, Mixpanel) in the source code.</li>
+    <li><strong>Ephemeral State:</strong> All business data (Project IDs, Capacity Results) resides in the browser's volatile memory (React State). <code>localStorage</code> is used <em>only</em> for UI preferences (Theme, last used Region) and explicitly excludes Access Tokens.</li>
 </ul>
-<h3>14.3. Auditability &amp; Logging</h3>
+
+<h3>14.3. Auditability & Logging</h3>
 <p>Since the app runs client-side, traditional server logs are minimal. However, enterprise audit requirements are met via the backend:</p>
 <ul>
-<li><strong>GCP Cloud Audit Logs:</strong> Every API call made by the app (e.g., <code>compute.capacity.get</code>) is authenticated against the user&#39;s credentials. These calls are logged in the customer&#39;s Google Cloud Project under <strong>Cloud Audit Logs</strong> (Data Access Logs), providing a tamper-proof audit trail of <em>who</em> checked capacity for <em>what</em> project and <em>when</em>.</li>
+    <li><strong>GCP Cloud Audit Logs:</strong> Every API call made by the app (e.g., <code>compute.capacity.get</code>) is authenticated against the user's credentials. These calls are logged in the customer's Google Cloud Project under <strong>Cloud Audit Logs</strong> (Data Access Logs), providing a tamper-proof audit trail of <em>who</em> checked capacity for <em>what</em> project and <em>when</em>.</li>
 </ul>
+
 <h3>14.4. Supply Chain Security</h3>
 <ul>
-<li><strong>Minimal Dependencies:</strong> The <code>package.json</code> is kept lean.<ul>
-<li><strong>Core:</strong> React, Vite.</li>
-<li><strong>UI:</strong> Tailwind, Lucide, Framer Motion.</li>
-<li><strong>Google:</strong> <code>@google/genai</code> (Official SDK).</li>
+    <li><strong>Minimal Dependencies:</strong> The <code>package.json</code> is kept lean.
+        <ul>
+            <li><strong>Core:</strong> React, Vite.</li>
+            <li><strong>UI:</strong> Tailwind, Lucide, Framer Motion.</li>
+            <li><strong>Google:</strong> <code>@google/genai</code> (Official SDK).</li>
+        </ul>
+    </li>
+    <li><strong>No Obfuscation:</strong> The build process uses standard Vite/Rollup minification. Source maps can be enabled for internal security reviews.</li>
 </ul>
-</li>
-<li><strong>No Obfuscation:</strong> The build process uses standard Vite/Rollup minification. Source maps can be enabled for internal security reviews.</li>
-</ul>
-<h3>14.5. Maintenance &amp; Extensibility</h3>
+
+<h3>14.5. Maintenance & Extensibility</h3>
 <ul>
-<li><strong>Standard React Patterns:</strong> The code uses standard Hooks (<code>useState</code>, <code>useEffect</code>, <code>useCallback</code>) and Functional Components. Any React developer can maintain it without knowing the specific AI prompts used to generate it.</li>
-<li><strong>Component Isolation:</strong> UI components (<code>ConfigurationPanel</code>, <code>ResultsDashboard</code>) are decoupled from business logic (<code>useCapacityLogic</code>), making it easy to swap out the UI or update the API layer independently.</li>
+    <li><strong>Standard React Patterns:</strong> The code uses standard Hooks (<code>useState</code>, <code>useEffect</code>, <code>useCallback</code>) and Functional Components. Any React developer can maintain it without knowing the specific AI prompts used to generate it.</li>
+    <li><strong>Component Isolation:</strong> UI components (<code>ConfigurationPanel</code>, <code>ResultsDashboard</code>) are decoupled from business logic (<code>useCapacityLogic</code>), making it easy to swap out the UI or update the API layer independently.</li>
 </ul>
+
 </body>
 </html>

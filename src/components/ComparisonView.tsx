@@ -57,14 +57,44 @@ const OPTION_THEMES = [
   }
 ];
 
+const CommandCell = ({ command }: { command: string }) => {
+  const [copied, setCopied] = React.useState(false);
+  
+  const handleCopy = () => {
+    navigator.clipboard.writeText(command);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <div className="p-4 border-l border-slate-100 dark:border-slate-800 relative group">
+        <button 
+            onClick={handleCopy}
+            className="absolute top-2 right-2 p-1.5 bg-white dark:bg-slate-800 text-slate-400 hover:text-indigo-600 rounded-md shadow-sm border border-slate-200 dark:border-slate-700 opacity-0 group-hover:opacity-100 transition-all z-10"
+            title="Copy Command"
+        >
+            {copied ? <Icons.Check size={12} /> : <Icons.Copy size={12} />}
+        </button>
+        <code className="text-[10px] font-mono text-slate-600 dark:text-slate-400 block bg-slate-100 dark:bg-slate-900 p-3 rounded-lg border border-slate-200 dark:border-slate-700 break-all relative">
+            {command}
+        </code>
+    </div>
+  );
+};
+
 const ComparisonView: React.FC<ComparisonViewProps> = ({ items, onClose }) => {
   const { output, metadata, isStreaming, triggerComparison } = useStreamAI();
 
+  // Generate a stable cache key based on sorted IDs
+  const comparisonKey = React.useMemo(() => 
+      `comparison-${items.map(i => i.id).sort().join('-')}`,
+  [items]);
+
   useEffect(() => {
       if (items.length > 0) {
-          triggerComparison(items);
+          triggerComparison(comparisonKey, items);
       }
-  }, [items, triggerComparison]);
+  }, [items, triggerComparison, comparisonKey]);
 
   // Safely extract scores, defaulting to 0 if no recommendations exist
   const getTopScore = (result: CapacityAdvisorResponse) => {
@@ -279,11 +309,10 @@ const ComparisonView: React.FC<ComparisonViewProps> = ({ items, onClose }) => {
                 <Icons.Terminal size={14} className="text-slate-400" /> Provisioning Command
             </div>
             {items.map(item => (
-                <div key={item.id} className="p-4 border-l border-slate-100 dark:border-slate-800">
-                    <code className="text-[10px] font-mono text-slate-600 dark:text-slate-400 block bg-slate-100 dark:bg-slate-900 p-2 rounded border border-slate-200 dark:border-slate-700 break-all">
-                        gcloud compute instances create {item.config.machineType}-demo --project={item.config.project} --zone={item.config.region}-a --machine-type={item.config.machineType}
-                    </code>
-                </div>
+                <CommandCell 
+                    key={item.id} 
+                    command={`gcloud compute instances create ${item.config.machineType}-demo --project=${item.config.project} --zone=${item.config.region}-a --machine-type=${item.config.machineType}`} 
+                />
             ))}
         </div>
       </div>
@@ -364,7 +393,7 @@ const ComparisonView: React.FC<ComparisonViewProps> = ({ items, onClose }) => {
       </div>
 
       {/* AI Comparison Analysis */}
-      <div className="h-[600px]">
+      <div className="h-[800px]">
          <React.Suspense fallback={<GeminiSkeleton />}>
              <GeminiCard data={metadata} loading={isStreaming} />
          </React.Suspense>

@@ -37,14 +37,14 @@ const App: React.FC = () => {
     isFetchingMachineTypes,
     removeToast,
     regionConfig,
-    isStreaming,
     toggleComparisonMode,
     selectRunForComparison,
     deleteRun,
     setBaseline,
     addScenario,
     removeScenario,
-    addToast
+    addToast,
+    isConfigDrifted
   } = useCapacityLogic();
 
   const [isPaletteOpen, setIsPaletteOpen] = useState(false);
@@ -168,6 +168,19 @@ const App: React.FC = () => {
     return baseCommands;
   }, [state.darkMode, state.mockMode, state.showDebug, state.result, state.batchResults, state.scenarios, handleSearch, clearResults, updateState, handleExport]);
 
+  const handleUpdateBatchDebug = (scenarioId: string, debug: any) => {
+      updateState({
+          debugData: {
+              ...state.debugData,
+              batchRequests: state.debugData.batchRequests?.map(req => 
+                  req.scenarioId === scenarioId 
+                  ? { ...req, geminiDebug: debug }
+                  : req
+              )
+          }
+      });
+  };
+
   return (
     <div 
       className="min-h-screen bg-enterprise-gradient text-slate-900 dark:text-slate-100 font-sans transition-colors duration-300 pb-32 relative overflow-hidden"
@@ -210,18 +223,19 @@ const App: React.FC = () => {
             addScenario={addScenario}
             removeScenario={removeScenario}
             addToast={addToast}
+            isConfigDrifted={isConfigDrifted}
           />
 
           <ResultsDashboard 
             state={state}
             onExport={handleExport}
             onClear={clearResults}
-            isStreaming={isStreaming}
             onToggleComparison={toggleComparisonMode}
             onSelectRun={selectRunForComparison}
             onDeleteRun={deleteRun}
             onSetBaseline={setBaseline}
             addToast={addToast}
+            onUpdateBatchDebug={handleUpdateBatchDebug}
           />
         </main>
       </div>

@@ -327,6 +327,51 @@ Language: ${navigator.language}
         );
 
       case 'gemini':
+         if (data.batchRequests && data.batchRequests.length > 0) {
+             const batchGemini = data.batchRequests.filter(r => r.geminiDebug);
+             
+             if (batchGemini.length === 0) {
+                 return <div className="text-slate-500 text-[10px] italic p-4">// No Gemini debug data available for batch requests.</div>;
+             }
+
+             return (
+                <div className="flex flex-col h-full gap-6">
+                    <div className="text-[10px] font-bold text-slate-500 uppercase mb-2">Batch AI Insights ({batchGemini.length})</div>
+                    {batchGemini.map((req, idx) => (
+                        <div key={idx} className="flex flex-col gap-4 border-b border-slate-200 dark:border-slate-800 pb-6 mb-2 last:border-0">
+                           <div className="flex justify-between items-center bg-slate-50 dark:bg-slate-800/50 p-2 rounded border border-slate-200 dark:border-slate-700">
+                              <div className="flex items-center gap-2">
+                                 <Icons.Cloud />
+                                 <span className="text-xs font-bold text-slate-700 dark:text-slate-200">{req.scenarioName}</span>
+                              </div>
+                              <span className="text-[10px] text-slate-500">{req.geminiDebug?.timestamp}</span>
+                           </div>
+                           
+                           <div className="flex-1 min-h-0 flex flex-col">
+                              <div className="flex justify-between items-center mb-2">
+                                  <h5 className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase">System Prompt</h5>
+                                  <button onClick={() => copyToClipboard(req.geminiDebug?.prompt || '')} className="text-[9px] text-indigo-500 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-white">Copy</button>
+                              </div>
+                              <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded p-3 overflow-y-auto max-h-[150px] custom-scrollbar">
+                                 <pre className="text-[10px] text-emerald-600 dark:text-emerald-300 font-mono whitespace-pre-wrap">{req.geminiDebug?.prompt}</pre>
+                              </div>
+                           </div>
+
+                           <div className="flex-1 min-h-0 flex flex-col">
+                              <div className="flex justify-between items-center mb-2">
+                                  <h5 className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase">Raw Model Response</h5>
+                                  <button onClick={() => copyToClipboard(req.geminiDebug?.responseRaw || '')} className="text-[9px] text-indigo-500 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-white">Copy</button>
+                              </div>
+                              <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded p-3 overflow-y-auto max-h-[300px] custom-scrollbar">
+                                 <pre className="text-[10px] text-blue-600 dark:text-blue-300 font-mono whitespace-pre-wrap">{req.geminiDebug?.responseRaw}</pre>
+                              </div>
+                           </div>
+                        </div>
+                    ))}
+                </div>
+             );
+         }
+
          if (!data.geminiDebug) return <div className="text-slate-500 text-[10px] italic p-4">// No Gemini debug data. Run analysis to populate.</div>;
          return (
             <div className="flex flex-col h-full gap-4">
